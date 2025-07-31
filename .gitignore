@@ -1,0 +1,91 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Firebase related
+**/google-services.json
+**/firebase.json
+**/firebase-app-id.json
+**/serviceAccountKey.json
+
+# Misc
+*.tmp
+*.DS_Store
+*.sublime-workspace
+*.sublime-project
+
+# Environment variables or secrets
+.env
+.env.*
+*.key.json
+*.pem
+
+# Crashlytics (Firebase)
+crashlytics-build.properties
+fabric.properties
+
+# Obfuscation, profiling, etc.
+*.map.json
+
+# Packages
+pubspec.lock
+
+build/web/
+
+# Exclude all backups
+*~
+
+# User-specific and OS generated files
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Android key files
+**/key.jks
+**/debug.keystore
+**/release.keystore
+
+# Firebase emulator data
+.firebase/
