@@ -90,7 +90,7 @@ class CourseRepository {
 
   Future<void> completeModule(String userId, String courseId, String moduleId, int points) async {
     try {
-      final progressId = '${userId}_${moduleId}';
+      final progressId = '${userId}_$moduleId';
       
       // Check if already completed
       final existingDoc = await _firestore
@@ -131,7 +131,7 @@ class CourseRepository {
 
   Future<void> completeActivity(String userId, String courseId, String moduleId, String activityId, int points) async {
     try {
-      final progressId = '${userId}_${activityId}';
+      final progressId = '${userId}_$activityId';
       
       // Check if already completed
       final existingDoc = await _firestore

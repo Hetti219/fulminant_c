@@ -238,10 +238,6 @@ class _ProfileStats extends StatelessWidget {
     // Total completed items (activities + modules)
     final totalCompleted = completedActivities + completedModules;
 
-    // Simple achievement calculation (could be more sophisticated)
-    final achievements =
-        (user.points / 100).floor(); // 1 achievement per 100 points
-
     return Row(
       children: [
         Expanded(
@@ -259,15 +255,6 @@ class _ProfileStats extends StatelessWidget {
             title: 'Completed',
             value: totalCompleted.toString(),
             color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _StatCard(
-            icon: Icons.emoji_events,
-            title: 'Achievements',
-            value: achievements.toString(),
-            color: Theme.of(context).colorScheme.tertiary,
           ),
         ),
       ],

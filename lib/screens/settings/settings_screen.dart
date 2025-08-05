@@ -5,7 +5,7 @@ import '../../blocs/auth/auth_event.dart';
 import '../../theme/theme_cubit.dart';
 import '../../widgets/theme_toggle_button.dart';
 import './privacy_policy_screen.dart';
-import './help_and_support_screen.dart'; // Added import
+import './help_and_support_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

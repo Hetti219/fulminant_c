@@ -240,7 +240,7 @@ class _CourseCard extends StatelessWidget {
 class _DefaultCourseImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: double.infinity,
       child: Icon(
