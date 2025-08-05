@@ -4,6 +4,8 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/auth_event.dart';
 import '../../theme/theme_cubit.dart';
 import '../../widgets/theme_toggle_button.dart';
+import './privacy_policy_screen.dart'; 
+import './help_and_support_screen.dart'; // Added import
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -187,12 +189,7 @@ class SettingsView extends StatelessWidget {
                     title: 'Privacy Policy',
                     subtitle: 'Read our privacy policy',
                     onTap: () {
-                      // TODO: Implement privacy policy
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Privacy policy feature coming soon!'),
-                        ),
-                      );
+                      Navigator.of(context).push(PrivacyPolicyScreen.route());
                     },
                   ),
                 ],
@@ -239,12 +236,7 @@ class SettingsView extends StatelessWidget {
                     title: 'Help & Support',
                     subtitle: 'Get help and contact support',
                     onTap: () {
-                      // TODO: Implement help & support
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Help & support feature coming soon!'),
-                        ),
-                      );
+                      Navigator.of(context).push(HelpAndSupportScreen.route()); // Updated onTap
                     },
                   ),
                 ],
