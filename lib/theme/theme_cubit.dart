@@ -186,7 +186,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     ),
     
     // Card Theme
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Color(0xFFFFFBFE),
       surfaceTintColor: Color(0xFF6366F1),
       elevation: 2,
@@ -320,7 +320,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     ),
     
     // Card Theme
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Color(0xFF131316),
       surfaceTintColor: Color(0xFFA5B4FC),
       elevation: 2,
