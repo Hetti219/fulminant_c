@@ -4,7 +4,7 @@ import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/auth_event.dart';
 import '../../theme/theme_cubit.dart';
 import '../../widgets/theme_toggle_button.dart';
-import './privacy_policy_screen.dart'; 
+import './privacy_policy_screen.dart';
 import './help_and_support_screen.dart'; // Added import
 
 class SettingsScreen extends StatelessWidget {
@@ -54,8 +54,8 @@ class SettingsView extends StatelessWidget {
                       Text(
                         'Appearance',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ],
                   ),
@@ -63,8 +63,8 @@ class SettingsView extends StatelessWidget {
                   Text(
                     'Customize the look and feel of the app',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                   const SizedBox(height: 20),
                   _ThemeSettingTile(),
@@ -72,73 +72,9 @@ class SettingsView extends StatelessWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
-          // Notifications Section
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.notifications,
-                        color: Theme.of(context).colorScheme.secondary,
-                        size: 24,
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Notifications',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Manage your notification preferences',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _NotificationSettingTile(
-                    title: 'Course Updates',
-                    subtitle: 'Get notified about new courses and updates',
-                    value: true,
-                    onChanged: (value) {
-                      // TODO: Implement notification settings
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  _NotificationSettingTile(
-                    title: 'Achievement Alerts',
-                    subtitle: 'Celebrate your accomplishments',
-                    value: true,
-                    onChanged: (value) {
-                      // TODO: Implement notification settings
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  _NotificationSettingTile(
-                    title: 'Study Reminders',
-                    subtitle: 'Stay on track with your learning goals',
-                    value: false,
-                    onChanged: (value) {
-                      // TODO: Implement notification settings
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          
-          const SizedBox(height: 16),
-          
+
           // Privacy & Security Section
           Card(
             child: Padding(
@@ -157,8 +93,8 @@ class SettingsView extends StatelessWidget {
                       Text(
                         'Privacy & Security',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ],
                   ),
@@ -166,8 +102,8 @@ class SettingsView extends StatelessWidget {
                   Text(
                     'Manage your account security and privacy',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                   const SizedBox(height: 20),
                   _SettingItem(
@@ -196,9 +132,9 @@ class SettingsView extends StatelessWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // About Section
           Card(
             child: Padding(
@@ -217,8 +153,8 @@ class SettingsView extends StatelessWidget {
                       Text(
                         'About',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ],
                   ),
@@ -236,16 +172,17 @@ class SettingsView extends StatelessWidget {
                     title: 'Help & Support',
                     subtitle: 'Get help and contact support',
                     onTap: () {
-                      Navigator.of(context).push(HelpAndSupportScreen.route()); // Updated onTap
+                      Navigator.of(context)
+                          .push(HelpAndSupportScreen.route()); // Updated onTap
                     },
                   ),
                 ],
               ),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Logout Section
           Card(
             child: Padding(
@@ -260,7 +197,7 @@ class SettingsView extends StatelessWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 32),
         ],
       ),
@@ -317,15 +254,15 @@ class _ThemeSettingTile extends StatelessWidget {
                 Text(
                   'Theme',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const Spacer(),
                 Text(
                   _getThemeLabel(state.themeType),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
@@ -362,52 +299,6 @@ class _ThemeSettingTile extends StatelessWidget {
   }
 }
 
-class _NotificationSettingTile extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  const _NotificationSettingTile({
-    required this.title,
-    required this.subtitle,
-    required this.value,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Switch(
-          value: value,
-          onChanged: onChanged,
-        ),
-      ],
-    );
-  }
-}
-
 class _SettingItem extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -438,7 +329,8 @@ class _SettingItem extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: iconColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
+              color:
+                  iconColor ?? Theme.of(context).colorScheme.onSurfaceVariant,
               size: 20,
             ),
             const SizedBox(width: 12),
@@ -449,16 +341,16 @@ class _SettingItem extends StatelessWidget {
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: titleColor,
-                    ),
+                          fontWeight: FontWeight.w600,
+                          color: titleColor,
+                        ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                 ],
               ),
