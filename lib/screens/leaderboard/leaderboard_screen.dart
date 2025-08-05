@@ -8,32 +8,27 @@ import '../../blocs/auth/auth_state.dart';
 import '../../models/user.dart';
 import '../../repositories/leaderboard_repository.dart';
 
-class LeaderboardScreen extends StatelessWidget {
-  const LeaderboardScreen({super.key});
+class LeaderboardScreen extends StatefulWidget {
+  final bool showScaffold;
+
+  const LeaderboardScreen({super.key, this.showScaffold = false});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const LeaderboardScreen());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LeaderboardBloc(
-        leaderboardRepository: RepositoryProvider.of<LeaderboardRepository>(context),
+    return MaterialPageRoute<void>(
+      builder: (context) => BlocProvider<LeaderboardBloc>(
+        create: (_) => LeaderboardBloc(
+          leaderboardRepository: context.read<LeaderboardRepository>(),
+        ),
+        child: const LeaderboardScreen(showScaffold: true),
       ),
-      child: const LeaderboardView(),
     );
   }
-}
-
-class LeaderboardView extends StatefulWidget {
-  const LeaderboardView({super.key});
 
   @override
-  State<LeaderboardView> createState() => _LeaderboardViewState();
+  State<LeaderboardScreen> createState() => _LeaderboardScreenState();
 }
 
-class _LeaderboardViewState extends State<LeaderboardView>
+class _LeaderboardScreenState extends State<LeaderboardScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -41,15 +36,17 @@ class _LeaderboardViewState extends State<LeaderboardView>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    
+
     // Load initial data
-    context.read<LeaderboardBloc>().add(const LoadTopUsers());
-    
     final authState = context.read<AuthBloc>().state;
-    if (authState.status == AuthStatus.authenticated && authState.user != null) {
+    if (authState.status == AuthStatus.authenticated &&
+        authState.user != null) {
       context.read<LeaderboardBloc>().add(LoadUserRank(authState.user!.uid));
-      context.read<LeaderboardBloc>().add(LoadUsersAroundRank(authState.user!.uid));
+      context
+          .read<LeaderboardBloc>()
+          .add(LoadUsersAroundRank(authState.user!.uid));
     }
+    context.read<LeaderboardBloc>().add(const LoadTopUsers());
   }
 
   @override
@@ -60,26 +57,38 @@ class _LeaderboardViewState extends State<LeaderboardView>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Global', icon: Icon(Icons.public)),
-            Tab(text: 'Around You', icon: Icon(Icons.people)),
-          ],
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: const [
-              _GlobalLeaderboardTab(),
-              _AroundYouTab(),
-            ],
-          ),
-        ),
+    final tabBar = TabBar(
+      controller: _tabController,
+      tabs: const [
+        Tab(text: 'Global', icon: Icon(Icons.public)),
+        Tab(text: 'Around You', icon: Icon(Icons.people)),
       ],
     );
+
+    final tabBarView = TabBarView(
+      controller: _tabController,
+      children: const [
+        _GlobalLeaderboardTab(),
+        _AroundYouTab(),
+      ],
+    );
+
+    if (widget.showScaffold) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Leaderboard'),
+          bottom: tabBar,
+        ),
+        body: tabBarView,
+      );
+    } else {
+      return Column(
+        children: [
+          tabBar,
+          Expanded(child: tabBarView),
+        ],
+      );
+    }
   }
 }
 
@@ -142,12 +151,17 @@ class _AroundYouTab extends StatelessWidget {
 
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<LeaderboardBloc>().add(LoadUsersAroundRank(authState.user!.uid));
-                context.read<LeaderboardBloc>().add(LoadUserRank(authState.user!.uid));
+                context
+                    .read<LeaderboardBloc>()
+                    .add(LoadUsersAroundRank(authState.user!.uid));
+                context
+                    .read<LeaderboardBloc>()
+                    .add(LoadUserRank(authState.user!.uid));
               },
               child: Column(
                 children: [
-                  if (state.userRank != null) _CurrentUserRankCard(userRank: state.userRank!),
+                  if (state.userRank != null)
+                    _CurrentUserRankCard(userRank: state.userRank!),
                   Expanded(
                     child: _LeaderboardList(
                       users: state.usersAroundRank,
@@ -189,9 +203,9 @@ class _CurrentUserRankCard extends StatelessWidget {
                     Text(
                       'Your Rank',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
-                      ),
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
                     ),
                     Text(
                       userRank.user.fullName,
@@ -206,7 +220,7 @@ class _CurrentUserRankCard extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         color: Colors.orange,
                         size: 20,
@@ -215,9 +229,9 @@ class _CurrentUserRankCard extends StatelessWidget {
                       Text(
                         '${userRank.user.points}',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange,
-                        ),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.orange,
+                            ),
                       ),
                     ],
                   ),
@@ -260,7 +274,8 @@ class _LeaderboardList extends StatelessWidget {
           );
         }
 
-        final userIndex = showCurrentUserRank && userRank != null ? index - 1 : index;
+        final userIndex =
+            showCurrentUserRank && userRank != null ? index - 1 : index;
         final user = users[userIndex];
         final rank = userIndex + 1;
         final isHighlighted = user.id == highlightUserId;
@@ -292,20 +307,22 @@ class _LeaderboardItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: Card(
         elevation: isHighlighted ? 4 : 1,
-        color: isHighlighted ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
+        color: isHighlighted
+            ? Theme.of(context).primaryColor.withOpacity(0.1)
+            : null,
         child: ListTile(
           leading: _RankBadge(rank: rank, isCurrentUser: isHighlighted),
           title: Text(
             user.fullName,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
-            ),
+                  fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
+                ),
           ),
           subtitle: Text(user.email),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+              const Icon(
                 Icons.star,
                 color: Colors.orange,
                 size: 20,
@@ -314,9 +331,9 @@ class _LeaderboardItem extends StatelessWidget {
               Text(
                 '${user.points}',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange,
-                ),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange,
+                    ),
               ),
             ],
           ),
@@ -424,21 +441,16 @@ class _ErrorView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.error_outline,
             size: 64,
-            color: Colors.red[400],
+            color: Colors.red,
           ),
           const SizedBox(height: 16),
           Text(
-            'Failed to load leaderboard',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          Text(
             message,
-            style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 16),
           ElevatedButton(

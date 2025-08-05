@@ -8,20 +8,34 @@ import '../../repositories/course_repository.dart';
 import 'course_detail_screen.dart';
 
 class CoursesListScreen extends StatelessWidget {
-  const CoursesListScreen({super.key});
+  final bool showScaffold;
+
+  const CoursesListScreen({super.key, this.showScaffold = false});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const CoursesListScreen());
+    return MaterialPageRoute<void>(
+        builder: (_) => const CoursesListScreen(showScaffold: true));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    final courseBlocProvider = BlocProvider(
       create: (context) => CourseBloc(
         courseRepository: RepositoryProvider.of<CourseRepository>(context),
       )..add(LoadCourses()),
       child: const CoursesListView(),
     );
+
+    if (showScaffold) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Courses'),
+        ),
+        body: courseBlocProvider,
+      );
+    } else {
+      return courseBlocProvider;
+    }
   }
 }
 

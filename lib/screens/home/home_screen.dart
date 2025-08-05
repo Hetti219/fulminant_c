@@ -22,21 +22,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fulminant Learning'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              context.read<AuthBloc>().add(AuthLogoutRequested());
-            },
-          ),
-        ],
-      ),
-      body: const HomeContent(),
-    );
+    return const HomeContent();
   }
 }
 
@@ -52,7 +38,8 @@ class _HomeContentState extends State<HomeContent> {
   void initState() {
     super.initState();
     final authState = context.read<AuthBloc>().state;
-    if (authState.status == AuthStatus.authenticated && authState.user != null) {
+    if (authState.status == AuthStatus.authenticated &&
+        authState.user != null) {
       context.read<LeaderboardBloc>().add(LoadUserRank(authState.user!.uid));
       context.read<CourseBloc>().add(LoadCourses());
     }
@@ -99,16 +86,16 @@ class _WelcomeCard extends StatelessWidget {
             Text(
               'Welcome back!',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               'Continue your learning journey',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.white.withOpacity(0.9),
-              ),
+                    color: Colors.white.withOpacity(0.9),
+                  ),
             ),
           ],
         ),
@@ -126,19 +113,19 @@ class _StatsSection extends StatelessWidget {
         Text(
           'Your Progress',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 16),
         BlocBuilder<LeaderboardBloc, LeaderboardState>(
           builder: (context, leaderboardState) {
             final userRank = leaderboardState.userRank;
-            
+
             return BlocBuilder<CourseBloc, CourseState>(
               builder: (context, courseState) {
                 final userPoints = userRank?.user.points ?? 0;
                 final coursesCount = courseState.courses.length;
-                
+
                 return Row(
                   children: [
                     Expanded(
@@ -207,8 +194,8 @@ class _StatCard extends StatelessWidget {
             Text(
               value,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             Text(
               title,
@@ -230,8 +217,8 @@ class _QuickActionsSection extends StatelessWidget {
         Text(
           'Quick Actions',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 16),
         GridView.count(
@@ -306,8 +293,8 @@ class _ActionCard extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
                 textAlign: TextAlign.center,
               ),
               Text(
@@ -322,4 +309,3 @@ class _ActionCard extends StatelessWidget {
     );
   }
 }
-

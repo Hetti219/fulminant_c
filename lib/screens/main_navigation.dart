@@ -29,7 +29,7 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   CourseBloc? _courseBloc;
   LeaderboardBloc? _leaderboardBloc;
-  
+
   final List<String> _titles = [
     'Fulminant Learning',
     'Courses',
@@ -40,7 +40,7 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _screens = [
     const HomeContent(),
     const CoursesListScreen(),
-    const LeaderboardScreen(),
+    const LeaderboardScreen(showScaffold: false),
     const ProfileScreen(),
   ];
 
@@ -65,7 +65,8 @@ class _MainNavigationState extends State<MainNavigation> {
             listener: (context, courseState) {
               // Listen for any changes in course state and refresh leaderboard
               final authState = context.read<AuthBloc>().state;
-              if (authState.status == AuthStatus.authenticated && authState.user != null) {
+              if (authState.status == AuthStatus.authenticated &&
+                  authState.user != null) {
                 // Refresh leaderboard data when any course state changes occur
                 _leaderboardBloc?.add(LoadUserRank(authState.user!.uid));
               }
@@ -76,14 +77,16 @@ class _MainNavigationState extends State<MainNavigation> {
           appBar: AppBar(
             title: Text(_titles[_currentIndex]),
             centerTitle: true,
-            actions: _currentIndex == 3 ? [
-              IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () {
-                  _showLogoutDialog(context);
-                },
-              ),
-            ] : null,
+            actions: _currentIndex == 3
+                ? [
+                    IconButton(
+                      icon: const Icon(Icons.logout),
+                      onPressed: () {
+                        _showLogoutDialog(context);
+                      },
+                    ),
+                  ]
+                : null,
           ),
           body: IndexedStack(
             index: _currentIndex,

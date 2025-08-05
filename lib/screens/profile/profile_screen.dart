@@ -10,15 +10,27 @@ import '../../models/course.dart';
 import '../settings/settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final bool showScaffold;
+
+  const ProfileScreen({super.key, this.showScaffold = false});
 
   static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const ProfileScreen());
+    return MaterialPageRoute<void>(
+        builder: (_) => const ProfileScreen(showScaffold: true));
   }
 
   @override
   Widget build(BuildContext context) {
-    return const ProfileView();
+    if (showScaffold) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Profile'),
+        ),
+        body: const ProfileView(),
+      );
+    } else {
+      return const ProfileView();
+    }
   }
 }
 
