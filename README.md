@@ -1,4 +1,4 @@
-# fulminant_c
+# Fulminant
 
 An online gamified educational mobile app made using flutter
 
