@@ -220,13 +220,15 @@ class _QuickActionsSection extends StatelessWidget {
               ),
         ),
         const SizedBox(height: 16),
-        GridView.count(
-          crossAxisCount: 2,
+        GridView(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 1.5,
+              mainAxisExtent: 140),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 1.5,
           children: [
             _ActionCard(
               icon: Icons.play_circle_outline,
@@ -279,7 +281,7 @@ class _ActionCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -295,11 +297,13 @@ class _ActionCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                 textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
               Text(
                 subtitle,
                 style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
