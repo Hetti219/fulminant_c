@@ -45,50 +45,50 @@ class CoursesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CourseBloc, CourseState>(
-        builder: (context, state) {
-          switch (state.status) {
-            case CourseStatus.initial:
-            case CourseStatus.loading:
-              return const Center(child: CircularProgressIndicator());
-            case CourseStatus.failure:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: Colors.red[400],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Failed to load courses',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      state.errorMessage ?? 'Unknown error occurred',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<CourseBloc>().add(LoadCourses());
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            case CourseStatus.success:
-              if (state.courses.isEmpty) {
-                return _EmptyCoursesView();
-              }
-              return _CoursesGrid(courses: state.courses);
-          }
-        },
-      );
+      builder: (context, state) {
+        switch (state.status) {
+          case CourseStatus.initial:
+          case CourseStatus.loading:
+            return const Center(child: CircularProgressIndicator());
+          case CourseStatus.failure:
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Colors.red[400],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Failed to load courses',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    state.errorMessage ?? 'Unknown error occurred',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<CourseBloc>().add(LoadCourses());
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          case CourseStatus.success:
+            if (state.courses.isEmpty) {
+              return _EmptyCoursesView();
+            }
+            return _CoursesGrid(courses: state.courses);
+        }
+      },
+    );
   }
 }
 
@@ -108,16 +108,16 @@ class _EmptyCoursesView extends StatelessWidget {
           Text(
             'No Courses Available',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Colors.grey[600],
-              fontWeight: FontWeight.bold,
-            ),
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             'Courses will appear here once they are added.',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Colors.grey[600],
-            ),
+                  color: Colors.grey[600],
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
@@ -141,16 +141,21 @@ class _CoursesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.of(context).textScaler.scale(1.0);
+    // Base height + a bit extra if the user has larger fonts enabled.
+    final tileHeight = 260.0 + (textScale - 1.0) * 80.0;
+
     return RefreshIndicator(
       onRefresh: () async {
         context.read<CourseBloc>().add(LoadCourses());
       },
       child: GridView.builder(
         padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
+          mainAxisExtent: tileHeight,
           childAspectRatio: 0.8,
         ),
         itemCount: courses.length,
@@ -206,22 +211,27 @@ class _CourseCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      course.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                    Flexible(
+                      child: Text(
+                        course.title,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      course.description,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
+                    Flexible(
+                      child: Text(
+                        course.description,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey[600],
+                            ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     const Spacer(),
                     Row(
@@ -234,9 +244,10 @@ class _CourseCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           '${course.moduleIds.length} modules',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey[600],
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
                         ),
                       ],
                     ),
