@@ -72,14 +72,11 @@ class _FakeUser_3 extends _i1.SmartFake implements _i3.User {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
-  MockAuthRepository() {
-    _i1.throwOnMissingStub(this);
-  }
-
   @override
   _i5.Stream<_i6.User?> get user => (super.noSuchMethod(
         Invocation.getter(#user),
         returnValue: _i5.Stream<_i6.User?>.empty(),
+        returnValueForMissingStub: _i5.Stream<_i6.User?>.empty(),
       ) as _i5.Stream<_i6.User?>);
 
   @override
@@ -139,6 +136,7 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
           [userId],
         ),
         returnValue: _i5.Future<_i3.User?>.value(),
+        returnValueForMissingStub: _i5.Future<_i3.User?>.value(),
       ) as _i5.Future<_i3.User?>);
 
   @override
@@ -173,10 +171,6 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
-  MockCourseRepository() {
-    _i1.throwOnMissingStub(this);
-  }
-
   @override
   _i5.Future<List<_i2.Course>> getCourses() => (super.noSuchMethod(
         Invocation.method(
@@ -184,6 +178,8 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
           [],
         ),
         returnValue: _i5.Future<List<_i2.Course>>.value(<_i2.Course>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i2.Course>>.value(<_i2.Course>[]),
       ) as _i5.Future<List<_i2.Course>>);
 
   @override
@@ -193,6 +189,13 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
           [courseId],
         ),
         returnValue: _i5.Future<_i2.Course>.value(_FakeCourse_0(
+          this,
+          Invocation.method(
+            #getCourse,
+            [courseId],
+          ),
+        )),
+        returnValueForMissingStub: _i5.Future<_i2.Course>.value(_FakeCourse_0(
           this,
           Invocation.method(
             #getCourse,
@@ -209,6 +212,8 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
           [courseId],
         ),
         returnValue: _i5.Future<List<_i2.Module>>.value(<_i2.Module>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i2.Module>>.value(<_i2.Module>[]),
       ) as _i5.Future<List<_i2.Module>>);
 
   @override
@@ -218,6 +223,13 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
           [moduleId],
         ),
         returnValue: _i5.Future<_i2.Module>.value(_FakeModule_1(
+          this,
+          Invocation.method(
+            #getModule,
+            [moduleId],
+          ),
+        )),
+        returnValueForMissingStub: _i5.Future<_i2.Module>.value(_FakeModule_1(
           this,
           Invocation.method(
             #getModule,
@@ -234,6 +246,8 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
           [userId],
         ),
         returnValue:
+            _i5.Future<List<_i2.UserProgress>>.value(<_i2.UserProgress>[]),
+        returnValueForMissingStub:
             _i5.Future<List<_i2.UserProgress>>.value(<_i2.UserProgress>[]),
       ) as _i5.Future<List<_i2.UserProgress>>);
 
@@ -298,10 +312,6 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
 /// See the documentation for Mockito's code generation for more information.
 class MockLeaderboardRepository extends _i1.Mock
     implements _i8.LeaderboardRepository {
-  MockLeaderboardRepository() {
-    _i1.throwOnMissingStub(this);
-  }
-
   @override
   _i5.Future<List<_i3.User>> getTopUsers({int? limit = 50}) =>
       (super.noSuchMethod(
@@ -311,6 +321,8 @@ class MockLeaderboardRepository extends _i1.Mock
           {#limit: limit},
         ),
         returnValue: _i5.Future<List<_i3.User>>.value(<_i3.User>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i3.User>>.value(<_i3.User>[]),
       ) as _i5.Future<List<_i3.User>>);
 
   @override
@@ -320,6 +332,7 @@ class MockLeaderboardRepository extends _i1.Mock
           [userId],
         ),
         returnValue: _i5.Future<_i8.UserRank?>.value(),
+        returnValueForMissingStub: _i5.Future<_i8.UserRank?>.value(),
       ) as _i5.Future<_i8.UserRank?>);
 
   @override
@@ -334,6 +347,8 @@ class MockLeaderboardRepository extends _i1.Mock
           {#range: range},
         ),
         returnValue: _i5.Future<List<_i3.User>>.value(<_i3.User>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i3.User>>.value(<_i3.User>[]),
       ) as _i5.Future<List<_i3.User>>);
 }
 
@@ -341,14 +356,14 @@ class MockLeaderboardRepository extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUser extends _i1.Mock implements _i3.User {
-  MockUser() {
-    _i1.throwOnMissingStub(this);
-  }
-
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
         returnValue: _i9.dummyValue<String>(
+          this,
+          Invocation.getter(#id),
+        ),
+        returnValueForMissingStub: _i9.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -361,12 +376,20 @@ class MockUser extends _i1.Mock implements _i3.User {
           this,
           Invocation.getter(#email),
         ),
+        returnValueForMissingStub: _i9.dummyValue<String>(
+          this,
+          Invocation.getter(#email),
+        ),
       ) as String);
 
   @override
   String get fullName => (super.noSuchMethod(
         Invocation.getter(#fullName),
         returnValue: _i9.dummyValue<String>(
+          this,
+          Invocation.getter(#fullName),
+        ),
+        returnValueForMissingStub: _i9.dummyValue<String>(
           this,
           Invocation.getter(#fullName),
         ),
@@ -379,12 +402,17 @@ class MockUser extends _i1.Mock implements _i3.User {
           this,
           Invocation.getter(#dateOfBirth),
         ),
+        returnValueForMissingStub: _FakeDateTime_2(
+          this,
+          Invocation.getter(#dateOfBirth),
+        ),
       ) as DateTime);
 
   @override
   int get points => (super.noSuchMethod(
         Invocation.getter(#points),
         returnValue: 0,
+        returnValueForMissingStub: 0,
       ) as int);
 
   @override
@@ -394,12 +422,17 @@ class MockUser extends _i1.Mock implements _i3.User {
           this,
           Invocation.getter(#createdAt),
         ),
+        returnValueForMissingStub: _FakeDateTime_2(
+          this,
+          Invocation.getter(#createdAt),
+        ),
       ) as DateTime);
 
   @override
   List<Object> get props => (super.noSuchMethod(
         Invocation.getter(#props),
         returnValue: <Object>[],
+        returnValueForMissingStub: <Object>[],
       ) as List<Object>);
 
   @override
@@ -439,6 +472,21 @@ class MockUser extends _i1.Mock implements _i3.User {
             },
           ),
         ),
+        returnValueForMissingStub: _FakeUser_3(
+          this,
+          Invocation.method(
+            #copyWith,
+            [],
+            {
+              #id: id,
+              #email: email,
+              #fullName: fullName,
+              #dateOfBirth: dateOfBirth,
+              #points: points,
+              #createdAt: createdAt,
+            },
+          ),
+        ),
       ) as _i3.User);
 
   @override
@@ -448,242 +496,6 @@ class MockUser extends _i1.Mock implements _i3.User {
           [],
         ),
         returnValue: <String, dynamic>{},
-      ) as Map<String, dynamic>);
-}
-
-/// A class which mocks [Course].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockCourse extends _i1.Mock implements _i2.Course {
-  MockCourse() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  String get id => (super.noSuchMethod(
-        Invocation.getter(#id),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#id),
-        ),
-      ) as String);
-
-  @override
-  String get title => (super.noSuchMethod(
-        Invocation.getter(#title),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#title),
-        ),
-      ) as String);
-
-  @override
-  String get description => (super.noSuchMethod(
-        Invocation.getter(#description),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#description),
-        ),
-      ) as String);
-
-  @override
-  String get imageUrl => (super.noSuchMethod(
-        Invocation.getter(#imageUrl),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#imageUrl),
-        ),
-      ) as String);
-
-  @override
-  List<String> get moduleIds => (super.noSuchMethod(
-        Invocation.getter(#moduleIds),
-        returnValue: <String>[],
-      ) as List<String>);
-
-  @override
-  DateTime get createdAt => (super.noSuchMethod(
-        Invocation.getter(#createdAt),
-        returnValue: _FakeDateTime_2(
-          this,
-          Invocation.getter(#createdAt),
-        ),
-      ) as DateTime);
-
-  @override
-  List<Object> get props => (super.noSuchMethod(
-        Invocation.getter(#props),
-        returnValue: <Object>[],
-      ) as List<Object>);
-
-  @override
-  Map<String, dynamic> toMap() => (super.noSuchMethod(
-        Invocation.method(
-          #toMap,
-          [],
-        ),
-        returnValue: <String, dynamic>{},
-      ) as Map<String, dynamic>);
-}
-
-/// A class which mocks [Module].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockModule extends _i1.Mock implements _i2.Module {
-  MockModule() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  String get id => (super.noSuchMethod(
-        Invocation.getter(#id),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#id),
-        ),
-      ) as String);
-
-  @override
-  String get courseId => (super.noSuchMethod(
-        Invocation.getter(#courseId),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#courseId),
-        ),
-      ) as String);
-
-  @override
-  String get title => (super.noSuchMethod(
-        Invocation.getter(#title),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#title),
-        ),
-      ) as String);
-
-  @override
-  String get content => (super.noSuchMethod(
-        Invocation.getter(#content),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#content),
-        ),
-      ) as String);
-
-  @override
-  List<_i2.Activity> get activities => (super.noSuchMethod(
-        Invocation.getter(#activities),
-        returnValue: <_i2.Activity>[],
-      ) as List<_i2.Activity>);
-
-  @override
-  int get pointsReward => (super.noSuchMethod(
-        Invocation.getter(#pointsReward),
-        returnValue: 0,
-      ) as int);
-
-  @override
-  DateTime get createdAt => (super.noSuchMethod(
-        Invocation.getter(#createdAt),
-        returnValue: _FakeDateTime_2(
-          this,
-          Invocation.getter(#createdAt),
-        ),
-      ) as DateTime);
-
-  @override
-  List<Object> get props => (super.noSuchMethod(
-        Invocation.getter(#props),
-        returnValue: <Object>[],
-      ) as List<Object>);
-
-  @override
-  Map<String, dynamic> toMap() => (super.noSuchMethod(
-        Invocation.method(
-          #toMap,
-          [],
-        ),
-        returnValue: <String, dynamic>{},
-      ) as Map<String, dynamic>);
-}
-
-/// A class which mocks [UserProgress].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockUserProgress extends _i1.Mock implements _i2.UserProgress {
-  MockUserProgress() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  String get id => (super.noSuchMethod(
-        Invocation.getter(#id),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#id),
-        ),
-      ) as String);
-
-  @override
-  String get userId => (super.noSuchMethod(
-        Invocation.getter(#userId),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#userId),
-        ),
-      ) as String);
-
-  @override
-  String get courseId => (super.noSuchMethod(
-        Invocation.getter(#courseId),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#courseId),
-        ),
-      ) as String);
-
-  @override
-  String get moduleId => (super.noSuchMethod(
-        Invocation.getter(#moduleId),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#moduleId),
-        ),
-      ) as String);
-
-  @override
-  bool get isCompleted => (super.noSuchMethod(
-        Invocation.getter(#isCompleted),
-        returnValue: false,
-      ) as bool);
-
-  @override
-  int get pointsEarned => (super.noSuchMethod(
-        Invocation.getter(#pointsEarned),
-        returnValue: 0,
-      ) as int);
-
-  @override
-  DateTime get completedAt => (super.noSuchMethod(
-        Invocation.getter(#completedAt),
-        returnValue: _FakeDateTime_2(
-          this,
-          Invocation.getter(#completedAt),
-        ),
-      ) as DateTime);
-
-  @override
-  List<Object?> get props => (super.noSuchMethod(
-        Invocation.getter(#props),
-        returnValue: <Object?>[],
-      ) as List<Object?>);
-
-  @override
-  Map<String, dynamic> toMap() => (super.noSuchMethod(
-        Invocation.method(
-          #toMap,
-          [],
-        ),
-        returnValue: <String, dynamic>{},
+        returnValueForMissingStub: <String, dynamic>{},
       ) as Map<String, dynamic>);
 }
