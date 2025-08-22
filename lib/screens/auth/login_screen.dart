@@ -58,17 +58,11 @@ class LoginForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.school,
-                size: 80,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Fulminant Learning',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              Image.asset(
+                'assets/logo.png',
+                width: 200,
+                height: 200,
+                fit: BoxFit.contain,
               ),
               const SizedBox(height: 48),
               _EmailInput(),
@@ -94,12 +88,14 @@ class _EmailInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_emailInput_textField'),
-          onChanged: (email) => context.read<LoginBloc>().add(LoginEmailChanged(email)),
+          onChanged: (email) =>
+              context.read<LoginBloc>().add(LoginEmailChanged(email)),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'Email',
             prefixIcon: const Icon(Icons.email),
-            errorText: state.email.displayError != null ? 'Invalid email' : null,
+            errorText:
+                state.email.displayError != null ? 'Invalid email' : null,
             border: const OutlineInputBorder(),
           ),
         );
@@ -116,12 +112,15 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
-          onChanged: (password) => context.read<LoginBloc>().add(LoginPasswordChanged(password)),
+          onChanged: (password) =>
+              context.read<LoginBloc>().add(LoginPasswordChanged(password)),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Password',
             prefixIcon: const Icon(Icons.lock),
-            errorText: state.password.displayError != null ? 'Password must be at least 6 characters' : null,
+            errorText: state.password.displayError != null
+                ? 'Password must be at least 6 characters'
+                : null,
             border: const OutlineInputBorder(),
           ),
         );

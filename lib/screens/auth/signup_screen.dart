@@ -68,17 +68,18 @@ class SignupForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.person_add,
-                size: 80,
-                color: Theme.of(context).primaryColor,
+              Image.asset(
+                'assets/logo.png',
+                width: 200,
+                height: 200,
+                fit: BoxFit.contain,
               ),
               const SizedBox(height: 16),
               Text(
                 'Create Account',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const SizedBox(height: 48),
               _FullNameInput(),
@@ -106,11 +107,14 @@ class _FullNameInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('signupForm_fullNameInput_textField'),
-          onChanged: (fullName) => context.read<SignupBloc>().add(SignupFullNameChanged(fullName)),
+          onChanged: (fullName) =>
+              context.read<SignupBloc>().add(SignupFullNameChanged(fullName)),
           decoration: InputDecoration(
             labelText: 'Full Name',
             prefixIcon: const Icon(Icons.person),
-            errorText: state.fullName.displayError != null ? 'Please enter a valid name' : null,
+            errorText: state.fullName.displayError != null
+                ? 'Please enter a valid name'
+                : null,
             border: const OutlineInputBorder(),
           ),
         );
@@ -127,12 +131,14 @@ class _EmailInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('signupForm_emailInput_textField'),
-          onChanged: (email) => context.read<SignupBloc>().add(SignupEmailChanged(email)),
+          onChanged: (email) =>
+              context.read<SignupBloc>().add(SignupEmailChanged(email)),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'Email',
             prefixIcon: const Icon(Icons.email),
-            errorText: state.email.displayError != null ? 'Invalid email' : null,
+            errorText:
+                state.email.displayError != null ? 'Invalid email' : null,
             border: const OutlineInputBorder(),
           ),
         );
@@ -149,12 +155,15 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('signupForm_passwordInput_textField'),
-          onChanged: (password) => context.read<SignupBloc>().add(SignupPasswordChanged(password)),
+          onChanged: (password) =>
+              context.read<SignupBloc>().add(SignupPasswordChanged(password)),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Password',
             prefixIcon: const Icon(Icons.lock),
-            errorText: state.password.displayError != null ? 'Password must be at least 6 characters' : null,
+            errorText: state.password.displayError != null
+                ? 'Password must be at least 6 characters'
+                : null,
             border: const OutlineInputBorder(),
           ),
         );
@@ -167,7 +176,8 @@ class _DateOfBirthInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
-      buildWhen: (previous, current) => previous.dateOfBirth != current.dateOfBirth,
+      buildWhen: (previous, current) =>
+          previous.dateOfBirth != current.dateOfBirth,
       builder: (context, state) {
         return TextField(
           key: const Key('signupForm_dateOfBirthInput_textField'),
@@ -175,7 +185,8 @@ class _DateOfBirthInput extends StatelessWidget {
           onTap: () async {
             final date = await showDatePicker(
               context: context,
-              initialDate: DateTime.now().subtract(const Duration(days: 365 * 18)),
+              initialDate:
+                  DateTime.now().subtract(const Duration(days: 365 * 18)),
               firstDate: DateTime(1950),
               lastDate: DateTime.now(),
             );
