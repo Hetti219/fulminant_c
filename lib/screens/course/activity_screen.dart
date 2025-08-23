@@ -260,7 +260,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   Widget _completionMessage() {
     return Card(
-      color: Colors.green.withOpacity(0.1),
+      color: Colors.green.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -299,7 +299,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   Widget _alreadyCompletedMessage() {
     return Card(
-      color: Colors.blue.withOpacity(0.1),
+      color: Colors.blue.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Center(

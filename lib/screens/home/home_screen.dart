@@ -75,7 +75,7 @@ class _WelcomeCard extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               Theme.of(context).primaryColor,
-              Theme.of(context).primaryColor.withOpacity(0.7),
+              Theme.of(context).primaryColor.withValues(alpha: 0.7),
             ],
           ),
         ),
@@ -93,7 +93,7 @@ class _WelcomeCard extends StatelessWidget {
             Text(
               'Continue your learning journey',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                   ),
             ),
           ],

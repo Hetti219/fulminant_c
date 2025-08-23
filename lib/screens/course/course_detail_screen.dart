@@ -23,7 +23,9 @@ class CourseDetailScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => CourseBloc(
         courseRepository: RepositoryProvider.of<CourseRepository>(context),
-      )..add(LoadCourse(courseId))..add(LoadCourseModules(courseId)),
+      )
+        ..add(LoadCourse(courseId))
+        ..add(LoadCourseModules(courseId)),
       child: const CourseDetailView(),
     );
   }
@@ -118,7 +120,7 @@ class _CourseDetailContent extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withOpacity(0.8),
+                    Theme.of(context).primaryColor.withValues(alpha: 0.8),
                   ],
                 ),
               ),
@@ -130,7 +132,7 @@ class _CourseDetailContent extends StatelessWidget {
                   : Icon(
                       Icons.school,
                       size: 80,
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                     ),
             ),
           ),
@@ -146,8 +148,8 @@ class _CourseDetailContent extends StatelessWidget {
                 Text(
                   'Modules',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 16),
               ],
@@ -196,8 +198,8 @@ class _CourseInfo extends StatelessWidget {
             Text(
               'Course Description',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -242,7 +244,7 @@ class _InfoChip extends StatelessWidget {
         label,
         style: Theme.of(context).textTheme.bodySmall,
       ),
-      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+      backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
     );
   }
 }
@@ -268,15 +270,15 @@ class _EmptyModulesView extends StatelessWidget {
               Text(
                 'No Modules Yet',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
+                      color: Colors.grey[600],
+                    ),
               ),
               const SizedBox(height: 8),
               Text(
                 'Modules for this course will appear here once they are added.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
+                      color: Colors.grey[600],
+                    ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -315,8 +317,8 @@ class _ModuleCard extends StatelessWidget {
           title: Text(
             module.title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,9 +343,9 @@ class _ModuleCard extends StatelessWidget {
                   Text(
                     '${module.pointsReward} points',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.orange,
-                      fontWeight: FontWeight.bold,
-                    ),
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(width: 16),
                   Icon(
@@ -355,8 +357,8 @@ class _ModuleCard extends StatelessWidget {
                   Text(
                     '${module.activities.length} activities',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
+                          color: Colors.grey[600],
+                        ),
                   ),
                 ],
               ),

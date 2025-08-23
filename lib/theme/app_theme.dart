@@ -76,7 +76,7 @@ class AppTheme {
           backgroundColor: AppColors.lightPrimary,
           foregroundColor: AppColors.lightOnPrimary,
           elevation: 2,
-          shadowColor: AppColors.lightShadow.withOpacity(0.2),
+          shadowColor: AppColors.lightShadow.withValues(alpha: 0.2),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -93,7 +93,7 @@ class AppTheme {
         color: AppColors.lightSurface,
         surfaceTintColor: AppColors.lightPrimary,
         elevation: 2,
-        shadowColor: AppColors.lightShadow.withOpacity(0.1),
+        shadowColor: AppColors.lightShadow.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -267,7 +267,7 @@ class AppTheme {
           backgroundColor: AppColors.darkPrimary,
           foregroundColor: AppColors.darkOnPrimary,
           elevation: 2,
-          shadowColor: AppColors.darkShadow.withOpacity(0.3),
+          shadowColor: AppColors.darkShadow.withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -284,7 +284,7 @@ class AppTheme {
         color: AppColors.darkSurface,
         surfaceTintColor: AppColors.darkPrimary,
         elevation: 2,
-        shadowColor: AppColors.darkShadow.withOpacity(0.2),
+        shadowColor: AppColors.darkShadow.withValues(alpha: 0.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),

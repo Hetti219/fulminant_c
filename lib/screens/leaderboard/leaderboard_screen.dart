@@ -228,10 +228,11 @@ class _CurrentUserRankCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         '${userRank.user.points}',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.orange,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange,
+                                ),
                       ),
                     ],
                   ),
@@ -262,7 +263,8 @@ class _LeaderboardList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: users.length + (showCurrentUserRank && userRank != null ? 1 : 0),
+      itemCount:
+          users.length + (showCurrentUserRank && userRank != null ? 1 : 0),
       itemBuilder: (context, index) {
         if (showCurrentUserRank && userRank != null && index == 0) {
           return Column(
@@ -308,14 +310,15 @@ class _LeaderboardItem extends StatelessWidget {
       child: Card(
         elevation: isHighlighted ? 4 : 1,
         color: isHighlighted
-            ? Theme.of(context).primaryColor.withOpacity(0.1)
+            ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
             : null,
         child: ListTile(
           leading: _RankBadge(rank: rank, isCurrentUser: isHighlighted),
           title: Text(
             user.fullName,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
+                  fontWeight:
+                      isHighlighted ? FontWeight.bold : FontWeight.normal,
                 ),
           ),
           subtitle: Text(user.email),
@@ -408,16 +411,16 @@ class _EmptyLeaderboardView extends StatelessWidget {
           Text(
             'No Rankings Yet',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Colors.grey[600],
-              fontWeight: FontWeight.bold,
-            ),
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             'Complete courses and activities to appear on the leaderboard!',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Colors.grey[600],
-            ),
+                  color: Colors.grey[600],
+                ),
             textAlign: TextAlign.center,
           ),
         ],

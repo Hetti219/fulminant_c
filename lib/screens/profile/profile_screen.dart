@@ -499,12 +499,15 @@ class _ProfileActions extends StatelessWidget {
                         RepositoryProvider.of<AuthRepository>(context);
                     await authRepository.updateUserProfile(user.id, newName);
 
-                    Navigator.of(dialogContext).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    Navigator.of(dialogContext.mounted as BuildContext).pop();
+                    ScaffoldMessenger.of(context.mounted as BuildContext)
+                        .showSnackBar(
                       SnackBar(
                         content: Text('Profile updated successfully!'),
                         backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context.mounted as BuildContext)
+                                .colorScheme
+                                .secondary,
                       ),
                     );
 
@@ -515,11 +518,15 @@ class _ProfileActions extends StatelessWidget {
                       profileState?._loadUserData();
                     }
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context.mounted as BuildContext)
+                        .showSnackBar(
                       SnackBar(
                         content:
                             Text('Failed to update profile: ${e.toString()}'),
-                        backgroundColor: Theme.of(context).colorScheme.error,
+                        backgroundColor:
+                            Theme.of(context.mounted as BuildContext)
+                                .colorScheme
+                                .error,
                       ),
                     );
                   }

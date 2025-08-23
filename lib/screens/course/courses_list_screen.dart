@@ -143,7 +143,7 @@ class _CoursesGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final textScale = MediaQuery.of(context).textScaler.scale(1.0);
     // Base height + a bit extra if the user has larger fonts enabled.
-    final tileHeight = 260.0 + (textScale - 1.0) * 80.0;
+    final tileHeight = 280.0 + (textScale - 1.0) * 80.0;
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -156,7 +156,6 @@ class _CoursesGrid extends StatelessWidget {
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           mainAxisExtent: tileHeight,
-          childAspectRatio: 0.8,
         ),
         itemCount: courses.length,
         itemBuilder: (context, index) {
@@ -175,6 +174,8 @@ class _CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       elevation: 4,
       clipBehavior: Clip.antiAlias,
@@ -192,7 +193,7 @@ class _CourseCard extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  color: theme.primaryColor.withValues(alpha: 0.1),
                 ),
                 child: course.imageUrl.isNotEmpty
                     ? Image.network(
@@ -211,29 +212,34 @@ class _CourseCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      child: Text(
-                        course.title,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                    // FIX: Let title size itself up to 2 lines (no Flexible here),
+                    // so it isn't squeezed by other Flexible/Spacer siblings.
+                    Text(
+                      course.title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
                     ),
-                    const SizedBox(height: 4),
-                    Flexible(
+                    const SizedBox(height: 6),
+
+                    // Use Expanded on description to occupy remaining space,
+                    // keeping the bottom row pinned to the card bottom.
+                    Expanded(
                       child: Text(
                         course.description,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
+                        softWrap: true,
                       ),
                     ),
-                    const Spacer(),
+
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Icon(
@@ -244,10 +250,9 @@ class _CourseCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           '${course.moduleIds.length} modules',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey[600],
-                                  ),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ],
                     ),
@@ -271,7 +276,7 @@ class _DefaultCourseImage extends StatelessWidget {
       child: Icon(
         Icons.school,
         size: 48,
-        color: Theme.of(context).primaryColor.withOpacity(0.5),
+        color: Theme.of(context).primaryColor.withValues(alpha: 0.5),
       ),
     );
   }
