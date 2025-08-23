@@ -69,7 +69,7 @@ class SignupForm extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
-                'assets/logo.png',
+                'assets/logo-res.png',
                 width: 200,
                 height: 200,
                 fit: BoxFit.contain,
