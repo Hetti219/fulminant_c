@@ -4,7 +4,6 @@ import 'package:fulminant_c/blocs/auth/auth_bloc.dart';
 import 'package:fulminant_c/blocs/auth/auth_event.dart';
 import 'package:fulminant_c/blocs/auth/auth_state.dart';
 import 'package:mockito/mockito.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fa;
 
 import '../helpers/mocks.mocks.dart';
 
