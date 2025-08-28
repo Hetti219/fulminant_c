@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import '../constants/parsers.dart';
 
 class Course extends Equatable {
@@ -100,22 +101,24 @@ class Module extends Equatable {
       // Handle if it's already a List
       if (activitiesData is List) {
         return activitiesData
-            .where((item) => item is Map<String, dynamic>)
-            .map((item) => Activity.fromMap(item as Map<String, dynamic>))
+            .whereType<Map<String, dynamic>>()
+            .map((item) => Activity.fromMap(item))
             .toList();
       }
 
       // Handle if it's a Map (subcollection case)
       if (activitiesData is Map) {
         return activitiesData.values
-            .where((item) => item is Map<String, dynamic>)
-            .map((item) => Activity.fromMap(item as Map<String, dynamic>))
+            .whereType<Map<String, dynamic>>()
+            .map((item) => Activity.fromMap(item))
             .toList();
       }
 
       return [];
     } catch (e) {
-      print('Failed to parse activities: $e');
+      if (kDebugMode) {
+        print('Failed to parse activities: $e');
+      }
       return [];
     }
   }
