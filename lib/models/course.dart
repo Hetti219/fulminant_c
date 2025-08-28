@@ -85,14 +85,39 @@ class Module extends Equatable {
       courseId: map['courseId'] ?? '',
       title: map['title'] ?? '',
       content: map['content'] ?? '',
-      activities: List<Activity>.from(
-        map['activities']?.map((x) => Activity.fromMap(x)) ?? [],
-      ),
+      activities: _parseActivitiesSafely(map['activities']),
       pointsReward: Parsers.parseIntSafely(map['pointsReward']),
       createdAt: map['createdAt'] is Timestamp
           ? (map['createdAt'] as Timestamp).toDate()
           : DateTime.parse(map['createdAt']),
     );
+  }
+
+  static List<Activity> _parseActivitiesSafely(dynamic activitiesData) {
+    if (activitiesData == null) return [];
+
+    try {
+      // Handle if it's already a List
+      if (activitiesData is List) {
+        return activitiesData
+            .where((item) => item is Map<String, dynamic>)
+            .map((item) => Activity.fromMap(item as Map<String, dynamic>))
+            .toList();
+      }
+
+      // Handle if it's a Map (subcollection case)
+      if (activitiesData is Map) {
+        return activitiesData.values
+            .where((item) => item is Map<String, dynamic>)
+            .map((item) => Activity.fromMap(item as Map<String, dynamic>))
+            .toList();
+      }
+
+      return [];
+    } catch (e) {
+      print('Failed to parse activities: $e');
+      return [];
+    }
   }
 
   @override
