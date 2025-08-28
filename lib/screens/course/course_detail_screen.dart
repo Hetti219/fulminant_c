@@ -125,10 +125,11 @@ class _CourseDetailContent extends StatelessWidget {
                 ),
               ),
               child: course.imageUrl.isNotEmpty
-                  ? Image.network(
-                      course.imageUrl,
+                  ? Image.network(course.imageUrl,
                       fit: BoxFit.cover,
-                    )
+                      errorBuilder: (_, __, ___) => const Center(
+                          child: Icon(Icons.school,
+                              size: 80, color: Colors.white70)))
                   : Icon(
                       Icons.school,
                       size: 80,
