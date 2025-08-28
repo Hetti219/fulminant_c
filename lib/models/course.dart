@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import '../constants/parsers.dart';
 
 class Course extends Equatable {
   final String id;
@@ -36,14 +37,15 @@ class Course extends Equatable {
       description: map['description'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
       moduleIds: List<String>.from(map['moduleIds'] ?? []),
-      createdAt: map['createdAt'] is Timestamp 
+      createdAt: map['createdAt'] is Timestamp
           ? (map['createdAt'] as Timestamp).toDate()
           : DateTime.parse(map['createdAt']),
     );
   }
 
   @override
-  List<Object> get props => [id, title, description, imageUrl, moduleIds, createdAt];
+  List<Object> get props =>
+      [id, title, description, imageUrl, moduleIds, createdAt];
 }
 
 class Module extends Equatable {
@@ -86,15 +88,16 @@ class Module extends Equatable {
       activities: List<Activity>.from(
         map['activities']?.map((x) => Activity.fromMap(x)) ?? [],
       ),
-      pointsReward: map['pointsReward']?.toInt() ?? 0,
-      createdAt: map['createdAt'] is Timestamp 
+      pointsReward: Parsers.parseIntSafely(map['pointsReward']),
+      createdAt: map['createdAt'] is Timestamp
           ? (map['createdAt'] as Timestamp).toDate()
           : DateTime.parse(map['createdAt']),
     );
   }
 
   @override
-  List<Object> get props => [id, courseId, title, content, activities, pointsReward, createdAt];
+  List<Object> get props =>
+      [id, courseId, title, content, activities, pointsReward, createdAt];
 }
 
 class Activity extends Equatable {
@@ -135,7 +138,7 @@ class Activity extends Equatable {
         orElse: () => ActivityType.quiz,
       ),
       data: map['data'] ?? {},
-      pointsReward: map['pointsReward']?.toInt() ?? 0,
+      pointsReward: Parsers.parseIntSafely(map['pointsReward']),
     );
   }
 
@@ -190,13 +193,22 @@ class UserProgress extends Equatable {
       moduleId: map['moduleId'] ?? '',
       activityId: map['activityId'],
       isCompleted: map['isCompleted'] ?? false,
-      pointsEarned: map['pointsEarned']?.toInt() ?? 0,
-      completedAt: map['completedAt'] is Timestamp 
+      pointsEarned: Parsers.parseIntSafely(map['pointsReward']),
+      completedAt: map['completedAt'] is Timestamp
           ? (map['completedAt'] as Timestamp).toDate()
           : DateTime.parse(map['completedAt']),
     );
   }
 
   @override
-  List<Object?> get props => [id, userId, courseId, moduleId, activityId, isCompleted, pointsEarned, completedAt];
+  List<Object?> get props => [
+        id,
+        userId,
+        courseId,
+        moduleId,
+        activityId,
+        isCompleted,
+        pointsEarned,
+        completedAt
+      ];
 }
