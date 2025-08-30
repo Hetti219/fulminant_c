@@ -51,6 +51,31 @@ class LoginForm extends StatelessWidget {
               ),
             );
         }
+
+        // Handle password reset success/failure
+        if (state.isPasswordResetSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content:
+                    const Text('Password reset email sent! Check your inbox.'),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                duration: const Duration(seconds: 4),
+              ),
+            );
+        }
+
+        if (state.passwordResetError != null) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.passwordResetError!),
+                backgroundColor: Theme.of(context).colorScheme.error,
+              ),
+            );
+        }
       },
       child: Align(
         alignment: const Alignment(0, -1 / 3),
@@ -68,6 +93,9 @@ class LoginForm extends StatelessWidget {
               _EmailInput(),
               const SizedBox(height: 16),
               _PasswordInput(),
+              const SizedBox(height: 8),
+              // NEW: Forgot Password Link
+              _ForgotPasswordButton(),
               const SizedBox(height: 24),
               _LoginButton(),
               const SizedBox(height: 16),
@@ -125,6 +153,91 @@ class _PasswordInput extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+// NEW: Forgot Password Button
+class _ForgotPasswordButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: state.isPasswordResetInProgress
+                ? null
+                : () => _showForgotPasswordDialog(context),
+            child: state.isPasswordResetInProgress
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Text('Forgot Password?'),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showForgotPasswordDialog(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Reset Password'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Enter your email address and we\'ll send you a link to reset your password.',
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                labelText: 'Email Address',
+                prefixIcon: Icon(Icons.email),
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              return ElevatedButton(
+                onPressed: state.isPasswordResetInProgress
+                    ? null
+                    : () {
+                        final email = emailController.text.trim();
+                        if (email.isNotEmpty) {
+                          context.read<LoginBloc>().add(
+                                PasswordResetRequested(email),
+                              );
+                          Navigator.of(dialogContext).pop();
+                        }
+                      },
+                child: state.isPasswordResetInProgress
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Send Reset Email'),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

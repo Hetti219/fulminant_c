@@ -15,6 +15,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
+    on<PasswordResetRequested>(
+        _onPasswordResetRequested); //Password reset event handler
   }
 
   void _onEmailChanged(LoginEmailChanged event, Emitter<LoginState> emit) {
@@ -23,11 +25,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       state.copyWith(
         email: email,
         isValid: Formz.validate([email, state.password]),
+        // Reset password reset states when email changes
+        isPasswordResetSuccess: false,
+        passwordResetError: null,
       ),
     );
   }
 
-  void _onPasswordChanged(LoginPasswordChanged event, Emitter<LoginState> emit) {
+  void _onPasswordChanged(
+      LoginPasswordChanged event, Emitter<LoginState> emit) {
     final password = Password.dirty(event.password);
     emit(
       state.copyWith(
@@ -54,6 +60,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           ),
         );
       }
+    }
+  }
+
+  void _onPasswordResetRequested(
+    PasswordResetRequested event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+      isPasswordResetInProgress: true,
+      isPasswordResetSuccess: false,
+      passwordResetError: null,
+    ));
+
+    try {
+      await _authRepository.sendPasswordResetEmail(event.email);
+      emit(state.copyWith(
+        isPasswordResetInProgress: false,
+        isPasswordResetSuccess: true,
+      ));
+    } catch (error) {
+      emit(state.copyWith(
+        isPasswordResetInProgress: false,
+        isPasswordResetSuccess: false,
+        passwordResetError: error.toString(),
+      ));
     }
   }
 }

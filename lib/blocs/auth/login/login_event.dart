@@ -26,3 +26,13 @@ class LoginPasswordChanged extends LoginEvent {
 }
 
 class LoginSubmitted extends LoginEvent {}
+
+// NEW EVENTS FOR PASSWORD RESET
+class PasswordResetRequested extends LoginEvent {
+  final String email;
+
+  const PasswordResetRequested(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
