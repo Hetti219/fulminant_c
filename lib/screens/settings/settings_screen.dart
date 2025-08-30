@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fulminant_c/screens/settings/password_change_screen.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/auth/auth_event.dart';
 import '../../theme/theme_cubit.dart';
@@ -111,12 +112,8 @@ class SettingsView extends StatelessWidget {
                     title: 'Change Password',
                     subtitle: 'Update your account password',
                     onTap: () {
-                      // TODO: Implement change password
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Change password feature coming soon!'),
-                        ),
-                      );
+                      // UPDATED: Navigate to password change screen
+                      Navigator.of(context).push(PasswordChangeScreen.route());
                     },
                   ),
                   const SizedBox(height: 16),
