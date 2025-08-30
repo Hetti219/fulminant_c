@@ -184,59 +184,64 @@ class _ForgotPasswordButton extends StatelessWidget {
 
   void _showForgotPasswordDialog(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
+    // Get the LoginBloc BEFORE opening the dialog
+    final loginBloc = context.read<LoginBloc>();
 
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Reset Password'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Enter your email address and we\'ll send you a link to reset your password.',
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'Email Address',
-                prefixIcon: Icon(Icons.email),
-                border: OutlineInputBorder(),
+      builder: (dialogContext) => BlocProvider.value(
+        value: loginBloc,
+        child: AlertDialog(
+          title: const Text('Reset Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Enter your email address and we\'ll send you a link to reset your password.',
               ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  labelText: 'Email Address',
+                  prefixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+            BlocBuilder<LoginBloc, LoginState>(
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: state.isPasswordResetInProgress
+                      ? null
+                      : () {
+                          final email = emailController.text.trim();
+                          if (email.isNotEmpty) {
+                            context.read<LoginBloc>().add(
+                                  PasswordResetRequested(email),
+                                );
+                            Navigator.of(dialogContext).pop();
+                          }
+                        },
+                  child: state.isPasswordResetInProgress
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Send Reset Email'),
+                );
+              },
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('Cancel'),
-          ),
-          BlocBuilder<LoginBloc, LoginState>(
-            builder: (context, state) {
-              return ElevatedButton(
-                onPressed: state.isPasswordResetInProgress
-                    ? null
-                    : () {
-                        final email = emailController.text.trim();
-                        if (email.isNotEmpty) {
-                          context.read<LoginBloc>().add(
-                                PasswordResetRequested(email),
-                              );
-                          Navigator.of(dialogContext).pop();
-                        }
-                      },
-                child: state.isPasswordResetInProgress
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text('Send Reset Email'),
-              );
-            },
-          ),
-        ],
       ),
     );
   }
