@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "io.github.hetti219.fulminant_c"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36//flutter.compileSdkVersion
     //ndkVersion = flutter.ndkVersion
 
     compileOptions {
