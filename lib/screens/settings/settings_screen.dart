@@ -7,6 +7,7 @@ import '../../theme/theme_cubit.dart';
 import '../../widgets/theme_toggle_button.dart';
 import './privacy_policy_screen.dart';
 import './help_and_support_screen.dart';
+import './biometric_settings_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -114,6 +115,16 @@ class SettingsView extends StatelessWidget {
                     onTap: () {
                       // UPDATED: Navigate to password change screen
                       Navigator.of(context).push(PasswordChangeScreen.route());
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  _SettingItem(
+                    icon: Icons.fingerprint,
+                    title: '2FA with Biometrics',
+                    subtitle: 'Enable or disable 2FA with biometrics',
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(BiometricSettingsScreen.route());
                     },
                   ),
                   const SizedBox(height: 16),

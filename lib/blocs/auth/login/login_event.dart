@@ -36,3 +36,16 @@ class PasswordResetRequested extends LoginEvent {
   @override
   List<Object> get props => [email];
 }
+
+//New events for biometric authentication
+class BiometricAuthenticationRequested extends LoginEvent {}
+
+class BiometricAuthenticationCompleted extends LoginEvent {
+  final bool success;
+  final String? error;
+
+  const BiometricAuthenticationCompleted({
+    required this.success,
+    this.error,
+  });
+}

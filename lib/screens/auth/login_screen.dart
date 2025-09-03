@@ -5,6 +5,7 @@ import '../../blocs/auth/login/login_bloc.dart';
 import '../../blocs/auth/login/login_event.dart';
 import '../../blocs/auth/login/login_state.dart';
 import '../../repositories/auth_repository.dart';
+import '../../repositories/biometric_service.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -26,6 +27,7 @@ class LoginScreen extends StatelessWidget {
         child: BlocProvider(
           create: (context) => LoginBloc(
             authRepository: RepositoryProvider.of<AuthRepository>(context),
+            biometricService: RepositoryProvider.of<BiometricService>(context),
           ),
           child: const LoginForm(),
         ),
@@ -41,6 +43,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
+        // Handle regular login failures
         if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -76,34 +79,134 @@ class LoginForm extends StatelessWidget {
               ),
             );
         }
+
+        // Handle biometric authentication errors
+        if (state.biometricAuthError != null) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.biometricAuthError!),
+                backgroundColor: Theme.of(context).colorScheme.error,
+                action: SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () => context
+                      .read<LoginBloc>()
+                      .add(BiometricAuthenticationRequested()),
+                ),
+              ),
+            );
+        }
       },
       child: Align(
         alignment: const Alignment(0, -1 / 3),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/logo-res.png',
-                width: 200,
-                height: 200,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 48),
-              _EmailInput(),
-              const SizedBox(height: 16),
-              _PasswordInput(),
-              const SizedBox(height: 8),
-              // NEW: Forgot Password Link
-              _ForgotPasswordButton(),
-              const SizedBox(height: 24),
-              _LoginButton(),
-              const SizedBox(height: 16),
-              _SignUpButton(),
-            ],
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              // Show biometric authentication screen if required
+              if (state.requiresBiometricAuth) {
+                return _BiometricAuthScreen();
+              }
+
+              // Show regular login form
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/logo-res.png',
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 48),
+                  _EmailInput(),
+                  const SizedBox(height: 16),
+                  _PasswordInput(),
+                  const SizedBox(height: 8),
+                  _ForgotPasswordButton(),
+                  const SizedBox(height: 24),
+                  _LoginButton(),
+                  const SizedBox(height: 16),
+                  _SignUpButton(),
+                ],
+              );
+            },
           ),
         ),
       ),
+    );
+  }
+}
+
+// NEW: Biometric Authentication Screen
+class _BiometricAuthScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/logo-res.png',
+              width: 150,
+              height: 150,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 32),
+            Icon(
+              Icons.fingerprint,
+              size: 80,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Biometric Authentication Required',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Please verify your identity using your fingerprint, face, or device PIN',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            if (state.isBiometricAuthInProgress)
+              const CircularProgressIndicator()
+            else
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => context
+                          .read<LoginBloc>()
+                          .add(BiometricAuthenticationRequested()),
+                      icon: const Icon(Icons.fingerprint),
+                      label: const Text('Authenticate'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: () {
+                      // Sign out and return to login form
+                      context.read<AuthRepository>().signOut();
+                    },
+                    child: const Text('Cancel & Sign Out'),
+                  ),
+                ],
+              ),
+          ],
+        );
+      },
     );
   }
 }
@@ -157,7 +260,6 @@ class _PasswordInput extends StatelessWidget {
   }
 }
 
-// NEW: Forgot Password Button
 class _ForgotPasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -184,7 +286,6 @@ class _ForgotPasswordButton extends StatelessWidget {
 
   void _showForgotPasswordDialog(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
-    // Get the LoginBloc BEFORE opening the dialog
     final loginBloc = context.read<LoginBloc>();
 
     showDialog(
@@ -217,16 +318,14 @@ class _ForgotPasswordButton extends StatelessWidget {
               child: const Text('Cancel'),
             ),
             BlocBuilder<LoginBloc, LoginState>(
-              builder: (context, state) {
+              builder: (blocContext, state) {
                 return ElevatedButton(
                   onPressed: state.isPasswordResetInProgress
                       ? null
                       : () {
                           final email = emailController.text.trim();
                           if (email.isNotEmpty) {
-                            context.read<LoginBloc>().add(
-                                  PasswordResetRequested(email),
-                                );
+                            loginBloc.add(PasswordResetRequested(email));
                             Navigator.of(dialogContext).pop();
                           }
                         },

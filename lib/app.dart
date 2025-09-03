@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/auth/auth_bloc.dart';
 import 'blocs/auth/auth_state.dart';
+import 'blocs/course/course_bloc.dart';
+import 'blocs/leaderboard/leaderboard_bloc.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/course_repository.dart';
 import 'repositories/leaderboard_repository.dart';
+import 'repositories/biometric_service.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/main_navigation.dart';
 import 'theme/theme_cubit.dart';
@@ -13,12 +16,14 @@ class App extends StatelessWidget {
   final AuthRepository authRepository;
   final CourseRepository courseRepository;
   final LeaderboardRepository leaderboardRepository;
+  final BiometricService biometricService;
 
   const App({
     super.key,
     required this.authRepository,
     required this.courseRepository,
     required this.leaderboardRepository,
+    required this.biometricService,
   });
 
   @override
@@ -28,6 +33,7 @@ class App extends StatelessWidget {
         RepositoryProvider.value(value: authRepository),
         RepositoryProvider.value(value: courseRepository),
         RepositoryProvider.value(value: leaderboardRepository),
+        RepositoryProvider.value(value: biometricService),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -37,6 +43,12 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (_) => ThemeCubit(),
           ),
+          //Other Blocs
+          BlocProvider(
+              create: (_) => CourseBloc(courseRepository: courseRepository)),
+          BlocProvider(
+              create: (_) => LeaderboardBloc(
+                  leaderboardRepository: leaderboardRepository)),
         ],
         child: const AppView(),
       ),

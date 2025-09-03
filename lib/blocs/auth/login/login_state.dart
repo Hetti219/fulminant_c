@@ -15,6 +15,11 @@ class LoginState extends Equatable {
   final bool isPasswordResetSuccess;
   final String? passwordResetError;
 
+  // NEW BIOMETRIC FIELDS
+  final bool requiresBiometricAuth;
+  final bool isBiometricAuthInProgress;
+  final String? biometricAuthError;
+
   const LoginState({
     this.status = FormzSubmissionStatus.initial,
     this.email = const Email.pure(),
@@ -25,6 +30,10 @@ class LoginState extends Equatable {
     this.isPasswordResetInProgress = false,
     this.isPasswordResetSuccess = false,
     this.passwordResetError,
+    //Biometric fields
+    this.requiresBiometricAuth = false,
+    this.isBiometricAuthInProgress = false,
+    this.biometricAuthError,
   });
 
   LoginState copyWith({
@@ -37,6 +46,10 @@ class LoginState extends Equatable {
     bool? isPasswordResetInProgress,
     bool? isPasswordResetSuccess,
     String? passwordResetError,
+    //Biometric fields
+    bool? requiresBiometricAuth,
+    bool? isBiometricAuthInProgress,
+    String? biometricAuthError,
   }) {
     return LoginState(
       status: status ?? this.status,
@@ -50,6 +63,12 @@ class LoginState extends Equatable {
       isPasswordResetSuccess:
           isPasswordResetSuccess ?? this.isPasswordResetSuccess,
       passwordResetError: passwordResetError,
+      //Biometric fields
+      requiresBiometricAuth:
+          requiresBiometricAuth ?? this.requiresBiometricAuth,
+      isBiometricAuthInProgress:
+          isBiometricAuthInProgress ?? this.isBiometricAuthInProgress,
+      biometricAuthError: biometricAuthError,
     );
   }
 
@@ -64,5 +83,9 @@ class LoginState extends Equatable {
         isPasswordResetInProgress,
         isPasswordResetSuccess,
         passwordResetError,
+        //Biometric fields
+        requiresBiometricAuth,
+        isBiometricAuthInProgress,
+        biometricAuthError,
       ];
 }
