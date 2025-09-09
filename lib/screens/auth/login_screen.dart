@@ -139,7 +139,19 @@ class LoginForm extends StatelessWidget {
 }
 
 // NEW: Biometric Authentication Screen
-class _BiometricAuthScreen extends StatelessWidget {
+class _BiometricAuthScreen extends StatefulWidget {
+  @override
+  State<_BiometricAuthScreen> createState() => _BiometricAuthScreenState();
+}
+
+class _BiometricAuthScreenState extends State<_BiometricAuthScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // [+] Automatically trigger the prompt when this screen is shown
+    context.read<LoginBloc>().add(BiometricAuthenticationRequested());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(

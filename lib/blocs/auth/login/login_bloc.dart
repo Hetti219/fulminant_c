@@ -178,8 +178,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else {
       // Biometric authentication failed - but user is still logged into Firebase
       // Show error and allow retry or logout
+      _authRepository.signOut();
+
+      // [+] Update the state to return to the login form and show the error.
       emit(state.copyWith(
         isBiometricAuthInProgress: false,
+        requiresBiometricAuth: false, // Return to the login form
+        status: FormzSubmissionStatus.initial, // Reset submission status
         biometricAuthError: event.error,
       ));
     }
