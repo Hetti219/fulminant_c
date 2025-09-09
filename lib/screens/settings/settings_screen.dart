@@ -170,7 +170,7 @@ class SettingsView extends StatelessWidget {
                   _SettingItem(
                     icon: Icons.info_outline,
                     title: 'App Version',
-                    subtitle: '0.1.0-UAT.3',
+                    subtitle: 'v0.2.0-beta.1',
                     onTap: () {},
                     showArrow: false,
                   ),

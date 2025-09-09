@@ -147,7 +147,7 @@ class HelpAndSupportScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     _KeyValueRow('App', 'Fulminant'),
-                    _KeyValueRow('Version', '0.1.0-UAT.3'),
+                    _KeyValueRow('Version', 'v0.2.0-beta.1'),
                     // TODO: wire with package_info_plus
                     _KeyValueRow('Purpose', 'Online Gamified mobile learning'),
                   ],
