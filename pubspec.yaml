@@ -21,6 +21,7 @@ dependencies:
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.0
   cloud_firestore: ^6.0.0
+  cloud_functions: ^5.2.0
   
   # State Management
   flutter_bloc: ^9.1.1
@@ -41,6 +42,7 @@ dependencies:
   local_auth: ^2.3.0
   flutter_secure_storage: ^9.2.4
   crypto: ^3.0.6
+  device_info_plus: ^11.2.0
 
 dev_dependencies:
   bloc_test: ^10.0.0
