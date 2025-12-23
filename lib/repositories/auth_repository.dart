@@ -133,12 +133,13 @@ class AuthRepository {
 
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
+      // Use generic messages for user-not-found and wrong-password to prevent enumeration
       case 'user-not-found':
-        return 'No account found with this email address.';
       case 'wrong-password':
-        return 'Current password is incorrect.';
+      case 'invalid-credential':
+        return 'Invalid email or password.';
       case 'weak-password':
-        return 'New password is too weak. Use at least 6 characters.';
+        return 'Password is too weak. Use at least 8 characters with mixed case, numbers, and symbols.';
       case 'requires-recent-login':
         return 'Please log out and log back in before changing your password.';
       case 'too-many-requests':
@@ -146,7 +147,7 @@ class AuthRepository {
       case 'invalid-email':
         return 'Invalid email address format.';
       default:
-        return e.message ?? 'An unknown error occurred.';
+        return e.message ?? 'An authentication error occurred.';
     }
   }
 }

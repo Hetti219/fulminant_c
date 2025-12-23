@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import '../models/course.dart';
 
 class CourseRepository {
   final FirebaseFirestore _firestore;
+  final FirebaseFunctions _functions;
 
-  CourseRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  CourseRepository({
+    FirebaseFirestore? firestore,
+    FirebaseFunctions? functions,
+  })  : _firestore = firestore ?? FirebaseFirestore.instance,
+        _functions = functions ?? FirebaseFunctions.instance;
 
   Future<List<Course>> getCourses() async {
     try {
@@ -88,84 +93,64 @@ class CourseRepository {
     }
   }
 
+  /// Complete a module using server-side Cloud Function for secure points validation
+  /// This prevents client-side manipulation of points
   Future<void> completeModule(String userId, String courseId, String moduleId, int points) async {
     try {
-      final progressId = '${userId}_$moduleId';
-      
-      // Check if already completed
-      final existingDoc = await _firestore
-          .collection('userProgress')
-          .doc(progressId)
-          .get();
-      
-      if (existingDoc.exists) {
-        final existingProgress = UserProgress.fromMap({...existingDoc.data()!, 'id': existingDoc.id});
-        if (existingProgress.isCompleted) {
-          throw CourseException('Module already completed');
-        }
-      }
-
-      final progress = UserProgress(
-        id: progressId,
-        userId: userId,
-        courseId: courseId,
-        moduleId: moduleId,
-        isCompleted: true,
-        pointsEarned: points,
-        completedAt: DateTime.now(),
-      );
-
-      await _firestore
-          .collection('userProgress')
-          .doc(progressId)
-          .set(progress.toMap());
-
-      // Update user's total points
-      await _firestore.collection('users').doc(userId).update({
-        'points': FieldValue.increment(points),
+      // Call Cloud Function instead of directly updating Firestore
+      // The server validates and awards the correct points
+      final HttpsCallable callable = _functions.httpsCallable('completeModule');
+      final result = await callable.call(<String, dynamic>{
+        'courseId': courseId,
+        'moduleId': moduleId,
       });
+
+      // Cloud Function returns success status and actual points earned
+      if (result.data['success'] != true) {
+        throw CourseException(result.data['message'] ?? 'Failed to complete module');
+      }
+    } on FirebaseFunctionsException catch (e) {
+      // Handle Cloud Functions errors
+      if (e.code == 'already-exists') {
+        throw CourseException('Module already completed');
+      } else if (e.code == 'not-found') {
+        throw CourseException('Module not found');
+      } else if (e.code == 'unauthenticated') {
+        throw CourseException('You must be logged in to complete modules');
+      }
+      throw CourseException(e.message ?? 'Failed to complete module');
     } catch (e) {
       throw CourseException(e.toString());
     }
   }
 
+  /// Complete an activity using server-side Cloud Function for secure points validation
+  /// This prevents client-side manipulation of points
   Future<void> completeActivity(String userId, String courseId, String moduleId, String activityId, int points) async {
     try {
-      final progressId = '${userId}_$activityId';
-      
-      // Check if already completed
-      final existingDoc = await _firestore
-          .collection('userProgress')
-          .doc(progressId)
-          .get();
-      
-      if (existingDoc.exists) {
-        final existingProgress = UserProgress.fromMap({...existingDoc.data()!, 'id': existingDoc.id});
-        if (existingProgress.isCompleted) {
-          throw CourseException('Activity already completed');
-        }
-      }
-
-      final progress = UserProgress(
-        id: progressId,
-        userId: userId,
-        courseId: courseId,
-        moduleId: moduleId,
-        activityId: activityId,
-        isCompleted: true,
-        pointsEarned: points,
-        completedAt: DateTime.now(),
-      );
-
-      await _firestore
-          .collection('userProgress')
-          .doc(progressId)
-          .set(progress.toMap());
-
-      // Update user's total points
-      await _firestore.collection('users').doc(userId).update({
-        'points': FieldValue.increment(points),
+      // Call Cloud Function instead of directly updating Firestore
+      // The server validates and awards the correct points
+      final HttpsCallable callable = _functions.httpsCallable('completeActivity');
+      final result = await callable.call(<String, dynamic>{
+        'courseId': courseId,
+        'moduleId': moduleId,
+        'activityId': activityId,
       });
+
+      // Cloud Function returns success status and actual points earned
+      if (result.data['success'] != true) {
+        throw CourseException(result.data['message'] ?? 'Failed to complete activity');
+      }
+    } on FirebaseFunctionsException catch (e) {
+      // Handle Cloud Functions errors
+      if (e.code == 'already-exists') {
+        throw CourseException('Activity already completed');
+      } else if (e.code == 'not-found') {
+        throw CourseException('Activity not found');
+      } else if (e.code == 'unauthenticated') {
+        throw CourseException('You must be logged in to complete activities');
+      }
+      throw CourseException(e.message ?? 'Failed to complete activity');
     } catch (e) {
       throw CourseException(e.toString());
     }

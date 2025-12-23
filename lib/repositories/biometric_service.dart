@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:crypto/crypto.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
@@ -78,7 +81,7 @@ class BiometricService {
       }
 
       // Create a unique hash for this user/device combination
-      final String deviceHash = _createDeviceHash(userEmail);
+      final String deviceHash = await _createDeviceHash(userEmail);
 
       // Store biometric enabled flag and hash
       await _storage.write(key: _biometricEnabledKey, value: 'true');
@@ -109,9 +112,9 @@ class BiometricService {
         return BiometricAuthResult.notEnabled;
       }
 
-      // Verify the stored hash matches current user
+      // Verify the stored hash matches current user and device
       final String? storedHash = await _storage.read(key: _biometricHashKey);
-      final String currentHash = _createDeviceHash(userEmail);
+      final String currentHash = await _createDeviceHash(userEmail);
 
       if (storedHash != currentHash) {
         // Hash mismatch - different user or corrupted data
@@ -138,7 +141,7 @@ class BiometricService {
       final bool authenticated = await _localAuth.authenticate(
         localizedReason: reason,
         options: const AuthenticationOptions(
-          biometricOnly: false, // Allow PIN/Password fallback
+          biometricOnly: true, // Require actual biometric authentication for security
           stickyAuth: true, // Keep auth dialog until success/cancel
         ),
       );
@@ -161,13 +164,49 @@ class BiometricService {
     }
   }
 
-  // Create a unique hash for user/device combination
-  String _createDeviceHash(String userEmail) {
-    final String data =
-        '$userEmail-${DateTime.now().millisecondsSinceEpoch ~/ 86400000}'; // Daily salt
+  // Create a unique hash for user/device combination with device-specific identifier
+  Future<String> _createDeviceHash(String userEmail) async {
+    final String deviceId = await _getDeviceIdentifier();
+    // Use monthly salt (more stable) combined with device-specific identifier
+    final int monthlySalt = DateTime.now().millisecondsSinceEpoch ~/ (86400000 * 30);
+    final String data = '$userEmail-$deviceId-$monthlySalt';
     final List<int> bytes = utf8.encode(data);
     final Digest digest = sha256.convert(bytes);
     return digest.toString();
+  }
+
+  // Get platform-specific device identifier
+  Future<String> _getDeviceIdentifier() async {
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    try {
+      if (kIsWeb) {
+        // For web, use browser fingerprint (limited but better than nothing)
+        final WebBrowserInfo webInfo = await deviceInfo.webBrowserInfo;
+        return '${webInfo.vendor}-${webInfo.userAgent}-${webInfo.hardwareConcurrency}';
+      } else if (Platform.isAndroid) {
+        final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        // Use Android ID - unique per device and app combination
+        return androidInfo.id;
+      } else if (Platform.isIOS) {
+        final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        // Use identifierForVendor - unique per device and vendor
+        return iosInfo.identifierForVendor ?? 'unknown-ios-device';
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting device identifier: $e');
+      }
+    }
+
+    // Fallback to a stored random ID if platform detection fails
+    const String deviceIdKey = 'device_identifier';
+    String? storedId = await _storage.read(key: deviceIdKey);
+    if (storedId == null) {
+      storedId = DateTime.now().millisecondsSinceEpoch.toString();
+      await _storage.write(key: deviceIdKey, value: storedId);
+    }
+    return storedId;
   }
 
   // Get user-friendly biometric type names
