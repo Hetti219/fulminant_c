@@ -48,4 +48,7 @@ class BiometricAuthenticationCompleted extends LoginEvent {
     required this.success,
     this.error,
   });
+
+  @override
+  List<Object> get props => [success, if (error != null) error!];
 }
