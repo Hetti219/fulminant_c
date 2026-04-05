@@ -31,13 +31,14 @@ class LeaderboardRepository {
 
       final user = User.fromMap({...userDoc.data()!, 'id': userDoc.id});
 
-      // Count users with higher points
-      final higherPointsQuery = await _firestore
+      // Use count() aggregation to avoid fetching all higher-ranked user documents
+      final countQuery = await _firestore
           .collection('users')
           .where('points', isGreaterThan: user.points)
+          .count()
           .get();
 
-      final rank = higherPointsQuery.docs.length + 1;
+      final rank = (countQuery.count ?? 0) + 1;
 
       return UserRank(
         user: user,
@@ -50,28 +51,47 @@ class LeaderboardRepository {
 
   Future<List<User>> getUsersAroundRank(String userId, {int range = 5}) async {
     try {
-      final userRank = await getUserRank(userId);
-      if (userRank == null) return [];
+      // Get user's current points directly instead of computing rank first
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      if (!userDoc.exists) return [];
+      final user = User.fromMap({...userDoc.data()!, 'id': userDoc.id});
 
-      final startRank = (userRank.rank - range).clamp(1, double.infinity).toInt();
-      final endRank = userRank.rank + range;
-
-      // Get users sorted by points, then slice for the range
-      final snapshot = await _firestore
+      // Fetch users ranked above (strictly higher points), closest first
+      final aboveFuture = _firestore
           .collection('users')
-          .orderBy('points', descending: true)
-          .limit(endRank)
+          .where('points', isGreaterThan: user.points)
+          .orderBy('points')
+          .limit(range)
           .get();
 
-      final allUsers = snapshot.docs
+      // Fetch users at or below (equal or lower points), closest first
+      final belowFuture = _firestore
+          .collection('users')
+          .where('points', isLessThanOrEqualTo: user.points)
+          .orderBy('points', descending: true)
+          .limit(range + 1)
+          .get();
+
+      // Run both queries in parallel
+      final results = await Future.wait([aboveFuture, belowFuture]);
+
+      final aboveUsers = results[0].docs
+          .map((doc) => User.fromMap({...doc.data(), 'id': doc.id}))
+          .toList()
+        ..sort((a, b) => b.points.compareTo(a.points));
+
+      final belowUsers = results[1].docs
           .map((doc) => User.fromMap({...doc.data(), 'id': doc.id}))
           .toList();
 
-      // Return users in the specified range
-      final startIndex = (startRank - 1).clamp(0, allUsers.length);
-      final endIndex = endRank.clamp(0, allUsers.length);
+      // Combine: above users (descending) + below users (already descending)
+      final combined = [...aboveUsers, ...belowUsers];
 
-      return allUsers.sublist(startIndex, endIndex);
+      // Deduplicate by user ID
+      final seen = <String>{};
+      combined.retainWhere((u) => seen.add(u.id));
+
+      return combined;
     } catch (e) {
       throw LeaderboardException(e.toString());
     }
