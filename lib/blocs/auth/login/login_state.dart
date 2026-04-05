@@ -3,6 +3,8 @@ import 'package:formz/formz.dart';
 import '../../../models/email.dart';
 import '../../../models/password.dart';
 
+const _sentinel = Object();
+
 class LoginState extends Equatable {
   final FormzSubmissionStatus status;
   final Email email;
@@ -48,7 +50,7 @@ class LoginState extends Equatable {
     Email? email,
     Password? password,
     bool? isValid,
-    String? errorMessage,
+    Object? errorMessage = _sentinel,
     //password reset fields
     bool? isPasswordResetInProgress,
     bool? isPasswordResetSuccess,
@@ -66,7 +68,9 @@ class LoginState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       isValid: isValid ?? this.isValid,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: identical(errorMessage, _sentinel)
+          ? this.errorMessage
+          : errorMessage as String?,
       //password reset fields
       isPasswordResetInProgress:
           isPasswordResetInProgress ?? this.isPasswordResetInProgress,

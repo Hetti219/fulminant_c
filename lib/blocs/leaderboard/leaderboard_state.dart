@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import '../../models/user.dart';
 import '../../repositories/leaderboard_repository.dart';
 
+const _sentinel = Object();
+
 enum LeaderboardStatus { initial, loading, success, failure }
 
 class LeaderboardState extends Equatable {
@@ -24,14 +26,16 @@ class LeaderboardState extends Equatable {
     List<User>? topUsers,
     UserRank? userRank,
     List<User>? usersAroundRank,
-    String? errorMessage,
+    Object? errorMessage = _sentinel,
   }) {
     return LeaderboardState(
       status: status ?? this.status,
       topUsers: topUsers ?? this.topUsers,
       userRank: userRank ?? this.userRank,
       usersAroundRank: usersAroundRank ?? this.usersAroundRank,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: identical(errorMessage, _sentinel)
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 

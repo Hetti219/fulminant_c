@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import '../../models/course.dart';
 
+const _sentinel = Object();
+
 enum CourseStatus { initial, loading, success, failure }
 
 class CourseState extends Equatable {
@@ -29,7 +31,7 @@ class CourseState extends Equatable {
     List<Module>? modules,
     Module? selectedModule,
     List<UserProgress>? userProgress,
-    String? errorMessage,
+    Object? errorMessage = _sentinel,
   }) {
     return CourseState(
       status: status ?? this.status,
@@ -38,7 +40,9 @@ class CourseState extends Equatable {
       modules: modules ?? this.modules,
       selectedModule: selectedModule ?? this.selectedModule,
       userProgress: userProgress ?? this.userProgress,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: identical(errorMessage, _sentinel)
+          ? this.errorMessage
+          : errorMessage as String?,
     );
   }
 
