@@ -131,22 +131,22 @@ class AuthRepository {
     }
   }
 
-  String _handleAuthException(FirebaseAuthException e) {
+  AuthException _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':
-        return 'No account found with this email address.';
+        return AuthException('No account found with this email address.');
       case 'wrong-password':
-        return 'Current password is incorrect.';
+        return AuthException('Current password is incorrect.');
       case 'weak-password':
-        return 'New password is too weak. Use at least 6 characters.';
+        return AuthException('New password is too weak. Use at least 6 characters.');
       case 'requires-recent-login':
-        return 'Please log out and log back in before changing your password.';
+        return AuthException('Please log out and log back in before changing your password.');
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later.';
+        return AuthException('Too many attempts. Please try again later.');
       case 'invalid-email':
-        return 'Invalid email address format.';
+        return AuthException('Invalid email address format.');
       default:
-        return e.message ?? 'An unknown error occurred.';
+        return AuthException(e.message ?? 'An unknown error occurred.');
     }
   }
 }
