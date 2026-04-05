@@ -440,7 +440,6 @@ class _CompleteModuleButton extends StatelessWidget {
                     userId: userId,
                     courseId: module.courseId,
                     moduleId: module.id,
-                    points: module.pointsReward,
                   ),
                 );
                 Navigator.of(dialogContext).pop();
