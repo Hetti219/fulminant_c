@@ -499,36 +499,34 @@ class _ProfileActions extends StatelessWidget {
                         RepositoryProvider.of<AuthRepository>(context);
                     await authRepository.updateUserProfile(user.id, newName);
 
-                    Navigator.of(dialogContext.mounted as BuildContext).pop();
-                    ScaffoldMessenger.of(context.mounted as BuildContext)
-                        .showSnackBar(
-                      SnackBar(
-                        content: Text('Profile updated successfully!'),
-                        backgroundColor:
-                            Theme.of(context.mounted as BuildContext)
-                                .colorScheme
-                                .secondary,
-                      ),
-                    );
-
-                    // Refresh the profile data
+                    if (dialogContext.mounted) {
+                      Navigator.of(dialogContext).pop();
+                    }
                     if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Profile updated successfully!'),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                        ),
+                      );
+
+                      // Refresh the profile data
                       final profileState =
                           context.findAncestorStateOfType<_ProfileViewState>();
                       profileState?._loadUserData();
                     }
                   } catch (e) {
-                    ScaffoldMessenger.of(context.mounted as BuildContext)
-                        .showSnackBar(
-                      SnackBar(
-                        content:
-                            Text('Failed to update profile: ${e.toString()}'),
-                        backgroundColor:
-                            Theme.of(context.mounted as BuildContext)
-                                .colorScheme
-                                .error,
-                      ),
-                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Failed to update profile: ${e.toString()}'),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.error,
+                        ),
+                      );
+                    }
                   }
                 } else {
                   Navigator.of(dialogContext).pop();
