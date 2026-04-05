@@ -8,7 +8,7 @@ class HelpAndSupportScreen extends StatelessWidget {
   static const String _supportEmail =
       'support@fulminant.app'; // ← change to your real inbox
   static const String _feedbackFormUrl =
-      'https://example.com/fulminant-feedback'; // ← optional: Google Form
+      'https://github.com/Hetti219/fulminant_c/issues'; // GitHub Issues for feedback and bug reports
 
   static Route<void> route() {
     return MaterialPageRoute<void>(
