@@ -303,6 +303,15 @@ class _LeaderboardItem extends StatelessWidget {
     this.isHighlighted = false,
   });
 
+  static String _maskEmail(String email) {
+    final parts = email.split('@');
+    if (parts.length != 2 || parts[0].isEmpty) return '***';
+    final local = parts[0];
+    final domain = parts[1];
+    final visible = local.length <= 2 ? local[0] : local.substring(0, 2);
+    return '$visible***@$domain';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -321,7 +330,7 @@ class _LeaderboardItem extends StatelessWidget {
                       isHighlighted ? FontWeight.bold : FontWeight.normal,
                 ),
           ),
-          subtitle: Text(user.email),
+          subtitle: Text(_maskEmail(user.email)),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
