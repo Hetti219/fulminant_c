@@ -21,6 +21,7 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
       emit(state.copyWith(
         status: LeaderboardStatus.success,
         topUsers: topUsers,
+        errorMessage: null,
       ));
     } catch (error) {
       emit(state.copyWith(

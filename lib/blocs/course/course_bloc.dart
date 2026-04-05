@@ -25,6 +25,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       emit(state.copyWith(
         status: CourseStatus.success,
         courses: courses,
+        errorMessage: null,
       ));
     } catch (error) {
       emit(state.copyWith(
@@ -41,6 +42,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       emit(state.copyWith(
         status: CourseStatus.success,
         selectedCourse: course,
+        errorMessage: null,
       ));
     } catch (error) {
       emit(state.copyWith(
@@ -57,6 +59,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       emit(state.copyWith(
         status: CourseStatus.success,
         modules: modules,
+        errorMessage: null,
       ));
     } catch (error) {
       emit(state.copyWith(
@@ -81,6 +84,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         status: CourseStatus.success,
         selectedModule: module,
         userProgress: userProgress,
+        errorMessage: null,
       ));
     } catch (error) {
       emit(state.copyWith(
