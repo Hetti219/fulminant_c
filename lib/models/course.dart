@@ -221,7 +221,7 @@ class UserProgress extends Equatable {
       moduleId: map['moduleId'] ?? '',
       activityId: map['activityId'],
       isCompleted: map['isCompleted'] ?? false,
-      pointsEarned: Parsers.parseIntSafely(map['pointsReward']),
+      pointsEarned: Parsers.parseIntSafely(map['pointsEarned']),
       completedAt: map['completedAt'] is Timestamp
           ? (map['completedAt'] as Timestamp).toDate()
           : DateTime.parse(map['completedAt']),
