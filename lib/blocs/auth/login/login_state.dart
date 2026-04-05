@@ -20,6 +20,10 @@ class LoginState extends Equatable {
   final bool isBiometricAuthInProgress;
   final String? biometricAuthError;
 
+  // Rate limiting fields
+  final int failedLoginAttempts;
+  final DateTime? lockoutUntil;
+
   const LoginState({
     this.status = FormzSubmissionStatus.initial,
     this.email = const Email.pure(),
@@ -34,6 +38,9 @@ class LoginState extends Equatable {
     this.requiresBiometricAuth = false,
     this.isBiometricAuthInProgress = false,
     this.biometricAuthError,
+    // Rate limiting
+    this.failedLoginAttempts = 0,
+    this.lockoutUntil,
   });
 
   LoginState copyWith({
@@ -50,6 +57,9 @@ class LoginState extends Equatable {
     bool? requiresBiometricAuth,
     bool? isBiometricAuthInProgress,
     String? biometricAuthError,
+    // Rate limiting
+    int? failedLoginAttempts,
+    DateTime? lockoutUntil,
   }) {
     return LoginState(
       status: status ?? this.status,
@@ -69,6 +79,9 @@ class LoginState extends Equatable {
       isBiometricAuthInProgress:
           isBiometricAuthInProgress ?? this.isBiometricAuthInProgress,
       biometricAuthError: biometricAuthError,
+      // Rate limiting
+      failedLoginAttempts: failedLoginAttempts ?? this.failedLoginAttempts,
+      lockoutUntil: lockoutUntil,
     );
   }
 
@@ -87,5 +100,8 @@ class LoginState extends Equatable {
         requiresBiometricAuth,
         isBiometricAuthInProgress,
         biometricAuthError,
+        // Rate limiting
+        failedLoginAttempts,
+        lockoutUntil,
       ];
 }

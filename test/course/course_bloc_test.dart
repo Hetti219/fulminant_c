@@ -60,21 +60,21 @@ void main() {
   blocTest<CourseBloc, CourseState>(
     'CompleteModule → calls CourseRepository.completeModule(...)',
     build: () {
-      when(repo.completeModule(any, any, any, any)).thenAnswer((_) async {});
+      when(repo.completeModule(any, any, any)).thenAnswer((_) async {});
       return bloc;
     },
     act: (b) => b.add(CompleteModule(
-        userId: 'u_1', courseId: 'c_prog', moduleId: 'm_1', points: 50)),
+        userId: 'u_1', courseId: 'c_prog', moduleId: 'm_1')),
     expect: () => [isA<CourseState>(), isA<CourseState>()],
     verify: (_) =>
-        verify(repo.completeModule('u_1', 'c_prog', 'm_1', 50)).called(1),
+        verify(repo.completeModule('u_1', 'c_prog', 'm_1')).called(1),
   );
 
 // Complete activity
   blocTest<CourseBloc, CourseState>(
     'CompleteActivity → calls CourseRepository.completeActivity(...)',
     build: () {
-      when(repo.completeActivity(any, any, any, any, any))
+      when(repo.completeActivity(any, any, any, any))
           .thenAnswer((_) async {});
       return bloc;
     },
@@ -82,11 +82,10 @@ void main() {
         userId: 'u_1',
         courseId: 'c_prog',
         moduleId: 'm_1',
-        activityId: 'a_42',
-        points: 10)),
+        activityId: 'a_42')),
     expect: () => [isA<CourseState>(), isA<CourseState>()],
     verify: (_) =>
-        verify(repo.completeActivity('u_1', 'c_prog', 'm_1', 'a_42', 10))
+        verify(repo.completeActivity('u_1', 'c_prog', 'm_1', 'a_42'))
             .called(1),
   );
 }

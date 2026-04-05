@@ -41,17 +41,15 @@ class CompleteModule extends CourseEvent {
   final String userId;
   final String courseId;
   final String moduleId;
-  final int points;
 
   const CompleteModule({
     required this.userId,
     required this.courseId,
     required this.moduleId,
-    required this.points,
   });
 
   @override
-  List<Object> get props => [userId, courseId, moduleId, points];
+  List<Object> get props => [userId, courseId, moduleId];
 }
 
 class CompleteActivity extends CourseEvent {
@@ -59,16 +57,14 @@ class CompleteActivity extends CourseEvent {
   final String courseId;
   final String moduleId;
   final String activityId;
-  final int points;
 
   const CompleteActivity({
     required this.userId,
     required this.courseId,
     required this.moduleId,
     required this.activityId,
-    required this.points,
   });
 
   @override
-  List<Object> get props => [userId, courseId, moduleId, activityId, points];
+  List<Object> get props => [userId, courseId, moduleId, activityId];
 }

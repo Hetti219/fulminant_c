@@ -390,7 +390,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
             courseId: widget.module.courseId,
             moduleId: widget.module.id,
             activityId: widget.activity.id,
-            points: widget.activity.pointsReward,
           ),
         );
 

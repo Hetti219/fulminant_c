@@ -95,7 +95,7 @@ class CourseRepository {
 
   /// Complete a module using server-side Cloud Function for secure points validation
   /// This prevents client-side manipulation of points
-  Future<void> completeModule(String userId, String courseId, String moduleId, int points) async {
+  Future<void> completeModule(String userId, String courseId, String moduleId) async {
     try {
       // Call Cloud Function instead of directly updating Firestore
       // The server validates and awards the correct points
@@ -126,7 +126,7 @@ class CourseRepository {
 
   /// Complete an activity using server-side Cloud Function for secure points validation
   /// This prevents client-side manipulation of points
-  Future<void> completeActivity(String userId, String courseId, String moduleId, String activityId, int points) async {
+  Future<void> completeActivity(String userId, String courseId, String moduleId, String activityId) async {
     try {
       // Call Cloud Function instead of directly updating Firestore
       // The server validates and awards the correct points

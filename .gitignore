@@ -49,6 +49,7 @@ app.*.map.json
 **/firebase.json
 **/firebase-app-id.json
 **/serviceAccountKey.json
+lib/firebase_options.dart
 
 # Misc
 *.tmp

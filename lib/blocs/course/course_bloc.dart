@@ -96,7 +96,6 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         event.userId,
         event.courseId,
         event.moduleId,
-        event.points,
       );
       
       // Reload user progress
@@ -117,7 +116,6 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         event.courseId,
         event.moduleId,
         event.activityId,
-        event.points,
       );
       
       // Reload user progress
