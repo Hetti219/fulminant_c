@@ -253,7 +253,6 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
     String? userId,
     String? courseId,
     String? moduleId,
-    int? points,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -262,7 +261,6 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
             userId,
             courseId,
             moduleId,
-            points,
           ],
         ),
         returnValue: _i5.Future<void>.value(),
@@ -275,7 +273,6 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
     String? courseId,
     String? moduleId,
     String? activityId,
-    int? points,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -285,7 +282,6 @@ class MockCourseRepository extends _i1.Mock implements _i7.CourseRepository {
             courseId,
             moduleId,
             activityId,
-            points,
           ],
         ),
         returnValue: _i5.Future<void>.value(),
