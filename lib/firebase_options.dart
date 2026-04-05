@@ -23,7 +23,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for iOS - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -64,12 +67,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'fulminant-c.firebasestorage.app',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyExample_iOS_Key_Replace_With_Actual_Key',
-    appId: '1:123456789:ios:abcd1234',
-    messagingSenderId: '123456789',
-    projectId: 'fulminant-learning-app',
-    storageBucket: 'fulminant-learning-app.appspot.com',
-    iosBundleId: 'io.github.hetti219.fulminantC',
-  );
 }
