@@ -11,6 +11,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository _authRepository;
   final BiometricService _biometricService;
 
+  static const int _maxLoginAttempts = 5;
+  static const Duration _lockoutDuration = Duration(minutes: 2);
+
   LoginBloc({
     required AuthRepository authRepository,
     required BiometricService biometricService,
@@ -56,6 +59,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _onSubmitted(LoginSubmitted event, Emitter<LoginState> emit) async {
     if (state.isValid) {
+      // Rate limiting: check if account is locked out
+      if (state.lockoutUntil != null &&
+          DateTime.now().isBefore(state.lockoutUntil!)) {
+        final remaining =
+            state.lockoutUntil!.difference(DateTime.now()).inSeconds;
+        emit(state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage:
+              'Too many failed attempts. Please try again in $remaining seconds.',
+        ));
+        return;
+      }
+
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {
         await _authRepository.signIn(
@@ -72,19 +88,33 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             status: FormzSubmissionStatus.initial,
             requiresBiometricAuth: true,
             biometricAuthError: null,
+            failedLoginAttempts: 0,
           ));
 
           // Automatically trigger biometric authentication
           add(BiometricAuthenticationRequested());
         } else {
           // No biometric 2FA - login complete
-          emit(state.copyWith(status: FormzSubmissionStatus.success));
+          emit(state.copyWith(
+            status: FormzSubmissionStatus.success,
+            failedLoginAttempts: 0,
+          ));
         }
       } catch (error) {
+        final newAttempts = state.failedLoginAttempts + 1;
+        final DateTime? lockout = newAttempts >= _maxLoginAttempts
+            ? DateTime.now().add(_lockoutDuration)
+            : null;
+        final lockoutMsg = lockout != null
+            ? ' Account locked for ${_lockoutDuration.inMinutes} minutes.'
+            : '';
+
         emit(
           state.copyWith(
             status: FormzSubmissionStatus.failure,
-            errorMessage: error.toString(),
+            errorMessage: '${error.toString()}$lockoutMsg',
+            failedLoginAttempts: newAttempts,
+            lockoutUntil: lockout,
           ),
         );
       }
