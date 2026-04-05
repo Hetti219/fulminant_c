@@ -34,7 +34,7 @@ class LoadModule extends CourseEvent {
   const LoadModule(this.moduleId, {this.userId});
 
   @override
-  List<Object> get props => [moduleId];
+  List<Object> get props => [moduleId, if (userId != null) userId!];
 }
 
 class CompleteModule extends CourseEvent {
