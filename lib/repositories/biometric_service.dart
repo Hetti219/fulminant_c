@@ -163,8 +163,7 @@ class BiometricService {
 
   // Create a unique hash for user/device combination
   String _createDeviceHash(String userEmail) {
-    final String data =
-        '$userEmail-${DateTime.now().millisecondsSinceEpoch ~/ 86400000}'; // Daily salt
+    final String data = userEmail;
     final List<int> bytes = utf8.encode(data);
     final Digest digest = sha256.convert(bytes);
     return digest.toString();
