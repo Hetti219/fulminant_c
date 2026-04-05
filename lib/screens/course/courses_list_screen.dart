@@ -19,22 +19,22 @@ class CoursesListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final courseBlocProvider = BlocProvider(
-      create: (context) => CourseBloc(
-        courseRepository: RepositoryProvider.of<CourseRepository>(context),
-      )..add(LoadCourses()),
-      child: const CoursesListView(),
-    );
-
     if (showScaffold) {
+      // Standalone route: create its own CourseBloc
       return Scaffold(
         appBar: AppBar(
           title: const Text('Courses'),
         ),
-        body: courseBlocProvider,
+        body: BlocProvider(
+          create: (context) => CourseBloc(
+            courseRepository: RepositoryProvider.of<CourseRepository>(context),
+          )..add(LoadCourses()),
+          child: const CoursesListView(),
+        ),
       );
     } else {
-      return courseBlocProvider;
+      // Embedded in MainNavigation: use the existing CourseBloc from the tree
+      return const CoursesListView();
     }
   }
 }
