@@ -22,10 +22,10 @@ class MainNavigation extends StatefulWidget {
   }
 
   @override
-  State<MainNavigation> createState() => _MainNavigationState();
+  State<MainNavigation> createState() => MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   CourseBloc? _courseBloc;
   LeaderboardBloc? _leaderboardBloc;
@@ -43,6 +43,12 @@ class _MainNavigationState extends State<MainNavigation> {
     const LeaderboardScreen(showScaffold: false),
     const ProfileScreen(),
   ];
+
+  void switchTab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

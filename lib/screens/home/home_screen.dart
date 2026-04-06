@@ -8,9 +8,7 @@ import '../../blocs/course/course_state.dart';
 import '../../blocs/leaderboard/leaderboard_bloc.dart';
 import '../../blocs/leaderboard/leaderboard_event.dart';
 import '../../blocs/leaderboard/leaderboard_state.dart';
-import '../course/courses_list_screen.dart';
-import '../leaderboard/leaderboard_screen.dart';
-import '../profile/profile_screen.dart';
+import '../main_navigation.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -235,7 +233,9 @@ class _QuickActionsSection extends StatelessWidget {
               title: 'Continue Learning',
               subtitle: 'Resume your progress',
               onTap: () {
-                Navigator.of(context).push(CoursesListScreen.route());
+                context
+                    .findAncestorStateOfType<MainNavigationState>()
+                    ?.switchTab(1);
               },
             ),
             _ActionCard(
@@ -243,7 +243,9 @@ class _QuickActionsSection extends StatelessWidget {
               title: 'Leaderboard',
               subtitle: 'See your ranking',
               onTap: () {
-                Navigator.of(context).push(LeaderboardScreen.route());
+                context
+                    .findAncestorStateOfType<MainNavigationState>()
+                    ?.switchTab(2);
               },
             ),
             _ActionCard(
@@ -251,7 +253,9 @@ class _QuickActionsSection extends StatelessWidget {
               title: 'Profile',
               subtitle: 'Manage account',
               onTap: () {
-                Navigator.of(context).push(ProfileScreen.route());
+                context
+                    .findAncestorStateOfType<MainNavigationState>()
+                    ?.switchTab(3);
               },
             ),
           ],
