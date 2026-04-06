@@ -12,9 +12,12 @@ void main() {
   late MockAuthRepository auth;
   late LoginBloc bloc;
 
+  late MockBiometricService biometric;
+
   setUp(() {
     auth = MockAuthRepository();
-    bloc = LoginBloc(authRepository: auth);
+    biometric = MockBiometricService();
+    bloc = LoginBloc(authRepository: auth, biometricService: biometric);
   });
 
   tearDown(() => bloc.close());

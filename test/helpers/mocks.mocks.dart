@@ -9,10 +9,12 @@ import 'package:firebase_auth/firebase_auth.dart' as _i6;
 import 'package:fulminant_c/models/course.dart' as _i2;
 import 'package:fulminant_c/models/user.dart' as _i3;
 import 'package:fulminant_c/repositories/auth_repository.dart' as _i4;
+import 'package:fulminant_c/repositories/biometric_service.dart' as _i9;
 import 'package:fulminant_c/repositories/course_repository.dart' as _i7;
 import 'package:fulminant_c/repositories/leaderboard_repository.dart' as _i8;
+import 'package:local_auth/local_auth.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i9;
+import 'package:mockito/src/dummies.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -27,6 +29,7 @@ import 'package:mockito/src/dummies.dart' as _i9;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeCourse_0 extends _i1.SmartFake implements _i2.Course {
   _FakeCourse_0(
@@ -163,6 +166,34 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
             userId,
             fullName,
           ],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> sendPasswordResetEmail(String? email) => (super.noSuchMethod(
+        Invocation.method(
+          #sendPasswordResetEmail,
+          [email],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> changePassword({
+    required String? currentPassword,
+    required String? newPassword,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #changePassword,
+          [],
+          {
+            #currentPassword: currentPassword,
+            #newPassword: newPassword,
+          },
         ),
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
@@ -333,6 +364,102 @@ class MockLeaderboardRepository extends _i1.Mock
       ) as _i5.Future<List<_i3.User>>);
 }
 
+/// A class which mocks [BiometricService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockBiometricService extends _i1.Mock implements _i9.BiometricService {
+  MockBiometricService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<bool> isDeviceSupported() => (super.noSuchMethod(
+        Invocation.method(
+          #isDeviceSupported,
+          [],
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> isBiometricAvailable() => (super.noSuchMethod(
+        Invocation.method(
+          #isBiometricAvailable,
+          [],
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<List<_i10.BiometricType>> getAvailableBiometrics() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAvailableBiometrics,
+          [],
+        ),
+        returnValue:
+            _i5.Future<List<_i10.BiometricType>>.value(<_i10.BiometricType>[]),
+      ) as _i5.Future<List<_i10.BiometricType>>);
+
+  @override
+  _i5.Future<bool> isBiometricEnabled() => (super.noSuchMethod(
+        Invocation.method(
+          #isBiometricEnabled,
+          [],
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<_i9.BiometricEnrollmentResult> enableBiometric(
+          String? userEmail) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #enableBiometric,
+          [userEmail],
+        ),
+        returnValue: _i5.Future<_i9.BiometricEnrollmentResult>.value(
+            _i9.BiometricEnrollmentResult.success),
+      ) as _i5.Future<_i9.BiometricEnrollmentResult>);
+
+  @override
+  _i5.Future<void> disableBiometric() => (super.noSuchMethod(
+        Invocation.method(
+          #disableBiometric,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<_i9.BiometricAuthResult> authenticateForLogin(String? userEmail) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #authenticateForLogin,
+          [userEmail],
+        ),
+        returnValue: _i5.Future<_i9.BiometricAuthResult>.value(
+            _i9.BiometricAuthResult.success),
+      ) as _i5.Future<_i9.BiometricAuthResult>);
+
+  @override
+  String getBiometricTypeName(List<_i10.BiometricType>? types) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getBiometricTypeName,
+          [types],
+        ),
+        returnValue: _i11.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getBiometricTypeName,
+            [types],
+          ),
+        ),
+      ) as String);
+}
+
 /// A class which mocks [User].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -344,7 +471,7 @@ class MockUser extends _i1.Mock implements _i3.User {
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -353,7 +480,7 @@ class MockUser extends _i1.Mock implements _i3.User {
   @override
   String get email => (super.noSuchMethod(
         Invocation.getter(#email),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#email),
         ),
@@ -362,7 +489,7 @@ class MockUser extends _i1.Mock implements _i3.User {
   @override
   String get fullName => (super.noSuchMethod(
         Invocation.getter(#fullName),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#fullName),
         ),
@@ -458,7 +585,7 @@ class MockCourse extends _i1.Mock implements _i2.Course {
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -467,7 +594,7 @@ class MockCourse extends _i1.Mock implements _i2.Course {
   @override
   String get title => (super.noSuchMethod(
         Invocation.getter(#title),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#title),
         ),
@@ -476,7 +603,7 @@ class MockCourse extends _i1.Mock implements _i2.Course {
   @override
   String get description => (super.noSuchMethod(
         Invocation.getter(#description),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#description),
         ),
@@ -485,7 +612,7 @@ class MockCourse extends _i1.Mock implements _i2.Course {
   @override
   String get imageUrl => (super.noSuchMethod(
         Invocation.getter(#imageUrl),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#imageUrl),
         ),
@@ -533,7 +660,7 @@ class MockModule extends _i1.Mock implements _i2.Module {
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -542,7 +669,7 @@ class MockModule extends _i1.Mock implements _i2.Module {
   @override
   String get courseId => (super.noSuchMethod(
         Invocation.getter(#courseId),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#courseId),
         ),
@@ -551,7 +678,7 @@ class MockModule extends _i1.Mock implements _i2.Module {
   @override
   String get title => (super.noSuchMethod(
         Invocation.getter(#title),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#title),
         ),
@@ -560,7 +687,7 @@ class MockModule extends _i1.Mock implements _i2.Module {
   @override
   String get content => (super.noSuchMethod(
         Invocation.getter(#content),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#content),
         ),
@@ -614,7 +741,7 @@ class MockUserProgress extends _i1.Mock implements _i2.UserProgress {
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -623,7 +750,7 @@ class MockUserProgress extends _i1.Mock implements _i2.UserProgress {
   @override
   String get userId => (super.noSuchMethod(
         Invocation.getter(#userId),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#userId),
         ),
@@ -632,7 +759,7 @@ class MockUserProgress extends _i1.Mock implements _i2.UserProgress {
   @override
   String get courseId => (super.noSuchMethod(
         Invocation.getter(#courseId),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#courseId),
         ),
@@ -641,7 +768,7 @@ class MockUserProgress extends _i1.Mock implements _i2.UserProgress {
   @override
   String get moduleId => (super.noSuchMethod(
         Invocation.getter(#moduleId),
-        returnValue: _i9.dummyValue<String>(
+        returnValue: _i11.dummyValue<String>(
           this,
           Invocation.getter(#moduleId),
         ),

@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 
 import 'package:fulminant_c/screens/auth/login_screen.dart';
 import 'package:fulminant_c/repositories/auth_repository.dart';
+import 'package:fulminant_c/repositories/biometric_service.dart';
 
 import '../helpers/pump_app.dart';
 import '../helpers/mocks.mocks.dart';
@@ -12,9 +13,11 @@ import '../helpers/mocks.mocks.dart';
 void main() {
   group('LoginScreen', () {
     late MockAuthRepository auth;
+    late MockBiometricService biometric;
 
     setUp(() {
       auth = MockAuthRepository();
+      biometric = MockBiometricService();
 // If your LoginBloc uses auth.signIn in the listener path, stub it:
       when(auth.signIn(
               email: anyNamed('email'), password: anyNamed('password')))
@@ -25,7 +28,10 @@ void main() {
         (tester) async {
       await pumpApp(
         tester,
-        repositories: [RepositoryProvider<AuthRepository>.value(value: auth)],
+        repositories: [
+          RepositoryProvider<AuthRepository>.value(value: auth),
+          RepositoryProvider<BiometricService>.value(value: biometric),
+        ],
         child: const LoginScreen(),
       );
 
