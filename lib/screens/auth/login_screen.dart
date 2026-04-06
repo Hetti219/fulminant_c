@@ -247,7 +247,14 @@ class _EmailInput extends StatelessWidget {
   }
 }
 
-class _PasswordInput extends StatelessWidget {
+class _PasswordInput extends StatefulWidget {
+  @override
+  State<_PasswordInput> createState() => _PasswordInputState();
+}
+
+class _PasswordInputState extends State<_PasswordInput> {
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
@@ -257,10 +264,16 @@ class _PasswordInput extends StatelessWidget {
           key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
               context.read<LoginBloc>().add(LoginPasswordChanged(password)),
-          obscureText: true,
+          obscureText: _obscureText,
           decoration: InputDecoration(
             labelText: 'Password',
             prefixIcon: const Icon(Icons.lock),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility_off : Icons.visibility,
+              ),
+              onPressed: () => setState(() => _obscureText = !_obscureText),
+            ),
             errorText: state.password.displayError != null
                 ? 'Password must be at least 6 characters'
                 : null,
