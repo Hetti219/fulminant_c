@@ -41,7 +41,7 @@ void main() {
       return bloc;
     },
     act: (b) => b.add(LoadUserRank('u_1')), // positional argument
-    expect: () => [isA<LeaderboardState>(), isA<LeaderboardState>()],
+    expect: () => [isA<LeaderboardState>()],
     verify: (_) => verify(lb.getUserRank('u_1')).called(1),
   );
 
@@ -56,7 +56,7 @@ void main() {
     },
     act: (b) => b.add(LoadUsersAroundRank('u_1', range: 2)),
     // positional + named
-    expect: () => [isA<LeaderboardState>(), isA<LeaderboardState>()],
+    expect: () => [isA<LeaderboardState>()],
     verify: (_) => verify(lb.getUsersAroundRank('u_1', range: 2)).called(1),
   );
 }

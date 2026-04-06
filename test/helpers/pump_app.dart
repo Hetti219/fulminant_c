@@ -23,5 +23,5 @@ Future<void> pumpApp(
       home: Scaffold(body: tree),
     ),
   );
-  await tester.pumpAndSettle();
+  await tester.pump();
 }

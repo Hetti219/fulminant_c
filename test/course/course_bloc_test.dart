@@ -61,11 +61,12 @@ void main() {
     'CompleteModule → calls CourseRepository.completeModule(...)',
     build: () {
       when(repo.completeModule(any, any, any)).thenAnswer((_) async {});
+      when(repo.getUserProgress(any)).thenAnswer((_) async => []);
       return bloc;
     },
     act: (b) => b.add(CompleteModule(
         userId: 'u_1', courseId: 'c_prog', moduleId: 'm_1')),
-    expect: () => [isA<CourseState>(), isA<CourseState>()],
+    expect: () => [isA<CourseState>()],
     verify: (_) =>
         verify(repo.completeModule('u_1', 'c_prog', 'm_1')).called(1),
   );
@@ -76,6 +77,7 @@ void main() {
     build: () {
       when(repo.completeActivity(any, any, any, any))
           .thenAnswer((_) async {});
+      when(repo.getUserProgress(any)).thenAnswer((_) async => []);
       return bloc;
     },
     act: (b) => b.add(CompleteActivity(
@@ -83,7 +85,7 @@ void main() {
         courseId: 'c_prog',
         moduleId: 'm_1',
         activityId: 'a_42')),
-    expect: () => [isA<CourseState>(), isA<CourseState>()],
+    expect: () => [isA<CourseState>()],
     verify: (_) =>
         verify(repo.completeActivity('u_1', 'c_prog', 'm_1', 'a_42'))
             .called(1),

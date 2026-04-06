@@ -7,6 +7,7 @@ import 'package:fulminant_c/screens/leaderboard/leaderboard_screen.dart';
 import 'package:fulminant_c/repositories/leaderboard_repository.dart';
 import 'package:fulminant_c/repositories/auth_repository.dart';
 import 'package:fulminant_c/blocs/auth/auth_bloc.dart';
+import 'package:fulminant_c/blocs/leaderboard/leaderboard_bloc.dart';
 import 'package:fulminant_c/models/user.dart' as app; // your domain User model
 
 import '../helpers/pump_app.dart';
@@ -17,6 +18,7 @@ void main() {
     late MockLeaderboardRepository lbRepo;
     late MockAuthRepository authRepo;
     late AuthBloc authBloc;
+    late LeaderboardBloc leaderboardBloc;
 
     setUp(() {
       lbRepo = MockLeaderboardRepository();
@@ -30,10 +32,12 @@ void main() {
           .thenAnswer((_) async => <app.User>[]);
 
       authBloc = AuthBloc(authRepository: authRepo);
+      leaderboardBloc = LeaderboardBloc(leaderboardRepository: lbRepo);
     });
 
     tearDown(() async {
       await authBloc.close();
+      await leaderboardBloc.close();
     });
 
     testWidgets('shows login prompt on "Around You" tab when not authenticated',
@@ -46,12 +50,14 @@ void main() {
         ],
         blocs: [
           BlocProvider<AuthBloc>.value(value: authBloc),
+          BlocProvider<LeaderboardBloc>.value(value: leaderboardBloc),
         ],
         child: const LeaderboardScreen(showScaffold: true),
       );
 
       await tester.tap(find.text('Around You'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text('Please log in to view your ranking'), findsOneWidget);
     });

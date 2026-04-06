@@ -34,7 +34,7 @@ void main() {
       b
         ..add(SignupFullNameChanged('Sakura Haruno'))
         ..add(SignupEmailChanged('sakura@leaf.dev'))
-        ..add(SignupPasswordChanged('w00db0y1'))
+        ..add(SignupPasswordChanged('W00db0y1'))
         ..add(SignupDateOfBirthChanged(DateTime(2002, 3, 28)))
         ..add(SignupSubmitted());
     },
@@ -48,7 +48,7 @@ void main() {
     verify: (_) {
       verify(auth.signUp(
         email: 'sakura@leaf.dev',
-        password: 'w00db0y1',
+        password: 'W00db0y1',
         fullName: 'Sakura Haruno',
         dateOfBirth: DateTime(2002, 3, 28),
       )).called(1);

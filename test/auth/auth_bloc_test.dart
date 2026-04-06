@@ -13,8 +13,7 @@ void main() {
 
   setUp(() {
     auth = MockAuthRepository();
-// NOTE: Intentionally no stub like `when(auth.userChanges())...` because
-// your AuthRepository interface doesn't define it.
+    when(auth.user).thenAnswer((_) => const Stream.empty());
     bloc = AuthBloc(authRepository: auth);
   });
 

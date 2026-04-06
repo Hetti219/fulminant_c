@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'app.dart';
-import 'repositories/auth_repository.dart';
-import 'repositories/course_repository.dart';
-import 'repositories/leaderboard_repository.dart';
-import 'repositories/biometric_service.dart';
+import 'repositories/firebase_auth_repository.dart';
+import 'repositories/firebase_course_repository.dart';
+import 'repositories/firebase_leaderboard_repository.dart';
+import 'repositories/local_biometric_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -15,10 +15,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  final authRepository = AuthRepository();
-  final courseRepository = CourseRepository();
-  final leaderboardRepository = LeaderboardRepository();
-  final biometricService = BiometricService();
+  final authRepository = FirebaseAuthRepository();
+  final courseRepository = FirebaseCourseRepository();
+  final leaderboardRepository = FirebaseLeaderboardRepository();
+  final biometricService = LocalBiometricService();
 
   runApp(App(
     authRepository: authRepository,

@@ -1,5 +1,6 @@
 import 'package:fulminant_c/repositories/course_repository.dart';
 import 'package:fulminant_c/repositories/leaderboard_repository.dart';
+import 'package:fulminant_c/repositories/biometric_service.dart';
 import 'package:mockito/annotations.dart';
 import 'package:fulminant_c/repositories/auth_repository.dart';
 
@@ -11,6 +12,7 @@ import 'package:fulminant_c/models/course.dart' as models;
   AuthRepository,
   CourseRepository,
   LeaderboardRepository,
+  BiometricService,
 // Domain types returned/consumed by repos
   domain.User,
   models.Course,
