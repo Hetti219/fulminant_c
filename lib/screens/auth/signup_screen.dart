@@ -46,11 +46,12 @@ class SignupForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text('Account created successfully! Please login.'),
+                content: Text('Account created successfully! Welcome!'),
                 backgroundColor: Theme.of(context).colorScheme.secondary,
               ),
             );
-          Navigator.of(context).pop();
+          // Auth state listener in app.dart will navigate to MainNavigation
+          // since Firebase createUserWithEmailAndPassword auto-signs in.
         } else if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -147,7 +148,14 @@ class _EmailInput extends StatelessWidget {
   }
 }
 
-class _PasswordInput extends StatelessWidget {
+class _PasswordInput extends StatefulWidget {
+  @override
+  State<_PasswordInput> createState() => _PasswordInputState();
+}
+
+class _PasswordInputState extends State<_PasswordInput> {
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
@@ -157,10 +165,16 @@ class _PasswordInput extends StatelessWidget {
           key: const Key('signupForm_passwordInput_textField'),
           onChanged: (password) =>
               context.read<SignupBloc>().add(SignupPasswordChanged(password)),
-          obscureText: true,
+          obscureText: _obscureText,
           decoration: InputDecoration(
             labelText: 'Password',
             prefixIcon: const Icon(Icons.lock),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility_off : Icons.visibility,
+              ),
+              onPressed: () => setState(() => _obscureText = !_obscureText),
+            ),
             errorText: state.password.displayError != null
                 ? 'Password must be at least 6 characters'
                 : null,
@@ -172,13 +186,29 @@ class _PasswordInput extends StatelessWidget {
   }
 }
 
-class _DateOfBirthInput extends StatelessWidget {
+class _DateOfBirthInput extends StatefulWidget {
+  @override
+  State<_DateOfBirthInput> createState() => _DateOfBirthInputState();
+}
+
+class _DateOfBirthInputState extends State<_DateOfBirthInput> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
       buildWhen: (previous, current) =>
           previous.dateOfBirth != current.dateOfBirth,
       builder: (context, state) {
+        _controller.text = state.dateOfBirth != null
+            ? DateFormat('MMM dd, yyyy').format(state.dateOfBirth!)
+            : '';
         return TextField(
           key: const Key('signupForm_dateOfBirthInput_textField'),
           readOnly: true,
@@ -194,11 +224,7 @@ class _DateOfBirthInput extends StatelessWidget {
               context.read<SignupBloc>().add(SignupDateOfBirthChanged(date));
             }
           },
-          controller: TextEditingController(
-            text: state.dateOfBirth != null
-                ? DateFormat('MMM dd, yyyy').format(state.dateOfBirth!)
-                : '',
-          ),
+          controller: _controller,
           decoration: const InputDecoration(
             labelText: 'Date of Birth',
             prefixIcon: Icon(Icons.calendar_today),
