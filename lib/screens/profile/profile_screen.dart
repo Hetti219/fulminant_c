@@ -453,88 +453,110 @@ class _ProfileActions extends StatelessWidget {
 
   void _showEditProfileDialog(BuildContext context) {
     final nameController = TextEditingController(text: user.fullName);
+    bool isSaving = false;
 
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Edit Profile'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  border: OutlineInputBorder(),
+        return StatefulBuilder(
+          builder: (dialogContext, setDialogState) {
+            return AlertDialog(
+              title: const Text('Edit Profile'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: nameController,
+                    enabled: !isSaving,
+                    decoration: const InputDecoration(
+                      labelText: 'Full Name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Email: ${user.email}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Email cannot be changed',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed:
+                      isSaving ? null : () => Navigator.of(dialogContext).pop(),
+                  child: const Text('Cancel'),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Email: ${user.email}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Email cannot be changed',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final newName = nameController.text.trim();
-                if (newName.isNotEmpty && newName != user.fullName) {
-                  try {
-                    final authRepository =
-                        RepositoryProvider.of<AuthRepository>(context);
-                    await authRepository.updateUserProfile(user.id, newName);
+                ElevatedButton(
+                  onPressed: isSaving
+                      ? null
+                      : () async {
+                          final newName = nameController.text.trim();
+                          if (newName.isNotEmpty && newName != user.fullName) {
+                            setDialogState(() => isSaving = true);
+                            try {
+                              final authRepository =
+                                  RepositoryProvider.of<AuthRepository>(
+                                      context);
+                              await authRepository.updateUserProfile(
+                                  user.id, newName);
 
-                    if (dialogContext.mounted) {
-                      Navigator.of(dialogContext).pop();
-                    }
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Profile updated successfully!'),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                        ),
-                      );
+                              if (dialogContext.mounted) {
+                                Navigator.of(dialogContext).pop();
+                              }
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('Profile updated successfully!'),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                );
 
-                      // Refresh the profile data
-                      final profileState =
-                          context.findAncestorStateOfType<_ProfileViewState>();
-                      profileState?._loadUserData();
-                    }
-                  } catch (e) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content:
-                              Text('Failed to update profile: ${e.toString()}'),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.error,
-                        ),
-                      );
-                    }
-                  }
-                } else {
-                  Navigator.of(dialogContext).pop();
-                }
-              },
-              child: const Text('Save'),
-            ),
-          ],
+                                final profileState =
+                                    context.findAncestorStateOfType<
+                                        _ProfileViewState>();
+                                profileState?._loadUserData();
+                              }
+                            } catch (e) {
+                              if (dialogContext.mounted) {
+                                setDialogState(() => isSaving = false);
+                              }
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Failed to update profile: ${e.toString()}'),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                  ),
+                                );
+                              }
+                            }
+                          } else {
+                            Navigator.of(dialogContext).pop();
+                          }
+                        },
+                  child: isSaving
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Save'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
