@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/bullet_item.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -42,24 +43,24 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 const _SectionTitle('2. Data we collect'),
                 const _BodyText(
                     'We only collect a small set of personal details you enter yourself. All other information is created by the app as you learn.'),
-                const _Bullet('Full name (you provide)'),
-                const _Bullet('Email address (you provide)'),
-                const _Bullet('Date of birth (you provide)'),
-                const _Bullet('Password (you provide)'),
-                const _Bullet(
+                const BulletItem('Full name (you provide)'),
+                const BulletItem('Email address (you provide)'),
+                const BulletItem('Date of birth (you provide)'),
+                const BulletItem('Password (you provide)'),
+                const BulletItem(
                     'Learning activity generated in the app (e.g., enrolled courses, progress, quiz scores, badges, leaderboard status).'),
                 const _SectionTitle('3. How we use your data'),
-                const _Bullet('Create and manage your Fulminant account.'),
-                const _Bullet('Let you sign in securely and recover access.'),
-                const _Bullet(
+                const BulletItem('Create and manage your Fulminant account.'),
+                const BulletItem('Let you sign in securely and recover access.'),
+                const BulletItem(
                     'Show your courses, progress, achievements and leaderboards.'),
-                const _Bullet(
+                const BulletItem(
                     'Improve app features based on aggregated, de‑identified usage patterns.'),
-                const _Bullet(
+                const BulletItem(
                     'Send essential service messages (e.g., account or security notices).'),
                 const _SectionTitle('4. What we do not do'),
-                const _Bullet('We do not sell your personal data.'),
-                const _Bullet(
+                const BulletItem('We do not sell your personal data.'),
+                const BulletItem(
                     'We do not show third‑party targeted ads based on your personal data.'),
                 const _SectionTitle('5. Legal basis (plain English)'),
                 const _BodyText(
@@ -70,9 +71,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   'We may share limited data with service providers strictly to operate the app (for example, secure hosting). These partners must follow confidentiality and security obligations. We may also share anonymised statistics (that cannot identify you) to help us understand app performance.',
                 ),
                 const _SectionTitle('7. Storage & retention'),
-                const _Bullet(
+                const BulletItem(
                     'Your account data is kept while your account is active.'),
-                const _Bullet(
+                const BulletItem(
                     'If you delete your account, we will delete or irreversibly de‑identify your personal data within a reasonable period unless the law requires us to keep it longer (e.g., to resolve disputes or meet audit needs).'),
                 const _SectionTitle('8. Security (summary)'),
                 const _BodyText(
@@ -83,11 +84,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   'Fulminant is intended for learners who are legally allowed to use online services in their country. If you are under the minimum age in your region, a parent or guardian should review this policy and help manage your account.',
                 ),
                 const _SectionTitle('10. Your choices & controls'),
-                const _Bullet(
+                const BulletItem(
                     'View and update your profile details inside the app (where available).'),
-                const _Bullet(
+                const BulletItem(
                     'Request account deletion from inside the app or by contacting us.'),
-                const _Bullet(
+                const BulletItem(
                     'Control email preferences for non‑essential messages (when settings are available).'),
                 const _SectionTitle('11. International transfers'),
                 const _BodyText(
@@ -155,27 +156,3 @@ class _BodyText extends StatelessWidget {
   }
 }
 
-class _Bullet extends StatelessWidget {
-  const _Bullet(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('•  '),
-          Expanded(
-            child: Text(
-              text,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

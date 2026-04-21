@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user.dart' as app_user;
 import 'auth_repository.dart';
 
@@ -111,7 +110,7 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (e) {
+    } on firebase_auth.FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
   }
@@ -126,7 +125,7 @@ class FirebaseAuthRepository implements AuthRepository {
 
     try {
       // Re-authenticate user with current password
-      final credential = EmailAuthProvider.credential(
+      final credential = firebase_auth.EmailAuthProvider.credential(
         email: user.email!,
         password: currentPassword,
       );
@@ -135,12 +134,12 @@ class FirebaseAuthRepository implements AuthRepository {
 
       // Update password
       await user.updatePassword(newPassword);
-    } on FirebaseAuthException catch (e) {
+    } on firebase_auth.FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
   }
 
-  AuthException _handleAuthException(FirebaseAuthException e) {
+  AuthException _handleAuthException(firebase_auth.FirebaseAuthException e) {
     switch (e.code) {
       // Use generic messages for user-not-found and wrong-password to prevent enumeration
       case 'user-not-found':

@@ -148,8 +148,8 @@ class _BiometricAuthScreenState extends State<_BiometricAuthScreen> {
   @override
   void initState() {
     super.initState();
-    // [+] Automatically trigger the prompt when this screen is shown
-    context.read<LoginBloc>().add(BiometricAuthenticationRequested());
+    // Biometric prompt is already triggered by LoginBloc._onSubmitted
+    // when requiresBiometricAuth becomes true (QUALITY-04: removed duplicate).
   }
 
   @override

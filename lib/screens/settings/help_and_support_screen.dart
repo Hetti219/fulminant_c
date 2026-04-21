@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../widgets/bullet_item.dart';
 import 'privacy_policy_screen.dart'; // Adjust the path if your file lives elsewhere
 
 class HelpAndSupportScreen extends StatelessWidget {
@@ -75,12 +76,12 @@ class HelpAndSupportScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    _Bullet('Check your internet connection and try again.'),
-                    _Bullet(
+                    BulletItem('Check your internet connection and try again.'),
+                    BulletItem(
                         'Pull to refresh the Courses screen to reload data.'),
-                    _Bullet(
+                    BulletItem(
                         'If progress looks wrong, sign out and sign back in.'),
-                    _Bullet(
+                    BulletItem(
                         'Still stuck? Copy the support email above and contact us.'),
                   ],
                 ),
@@ -226,25 +227,6 @@ class _ActionTile extends StatelessWidget {
   }
 }
 
-class _Bullet extends StatelessWidget {
-  const _Bullet(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('•  '),
-          Expanded(child: Text(text)),
-        ],
-      ),
-    );
-  }
-}
 
 class _FaqList extends StatelessWidget {
   const _FaqList({required this.items});
