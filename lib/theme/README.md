@@ -6,9 +6,7 @@
 lib/
 ├── theme/
 │   ├── app_colors.dart          # Color definitions for light/dark themes
-│   ├── app_theme.dart           # Complete theme configurations
 │   ├── theme_cubit.dart         # Theme state management
-│   └── theme_test_page.dart     # Test page for theme validation
 ├── widgets/
 │   └── theme_toggle_button.dart # Theme switching UI components
 └── screens/
