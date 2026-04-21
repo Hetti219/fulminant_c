@@ -18,7 +18,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     on<CompleteActivity>(_onCompleteActivity);
   }
 
-  void _onLoadCourses(LoadCourses event, Emitter<CourseState> emit) async {
+  Future<void> _onLoadCourses(LoadCourses event, Emitter<CourseState> emit) async {
     emit(state.copyWith(status: CourseStatus.loading));
     try {
       final courses = await _courseRepository.getCourses();
@@ -35,7 +35,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     }
   }
 
-  void _onLoadCourse(LoadCourse event, Emitter<CourseState> emit) async {
+  Future<void> _onLoadCourse(LoadCourse event, Emitter<CourseState> emit) async {
     emit(state.copyWith(status: CourseStatus.loading));
     try {
       final course = await _courseRepository.getCourse(event.courseId);
@@ -52,7 +52,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     }
   }
 
-  void _onLoadCourseModules(LoadCourseModules event, Emitter<CourseState> emit) async {
+  Future<void> _onLoadCourseModules(LoadCourseModules event, Emitter<CourseState> emit) async {
     emit(state.copyWith(status: CourseStatus.loading));
     try {
       final modules = await _courseRepository.getCourseModules(event.courseId);
@@ -69,7 +69,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     }
   }
 
-  void _onLoadModule(LoadModule event, Emitter<CourseState> emit) async {
+  Future<void> _onLoadModule(LoadModule event, Emitter<CourseState> emit) async {
     emit(state.copyWith(status: CourseStatus.loading));
     try {
       final module = await _courseRepository.getModule(event.moduleId);
@@ -94,7 +94,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     }
   }
 
-  void _onCompleteModule(CompleteModule event, Emitter<CourseState> emit) async {
+  Future<void> _onCompleteModule(CompleteModule event, Emitter<CourseState> emit) async {
     try {
       await _courseRepository.completeModule(
         event.userId,
@@ -113,7 +113,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     }
   }
 
-  void _onCompleteActivity(CompleteActivity event, Emitter<CourseState> emit) async {
+  Future<void> _onCompleteActivity(CompleteActivity event, Emitter<CourseState> emit) async {
     try {
       await _courseRepository.completeActivity(
         event.userId,

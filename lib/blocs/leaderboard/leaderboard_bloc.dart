@@ -14,7 +14,7 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
     on<LoadUsersAroundRank>(_onLoadUsersAroundRank);
   }
 
-  void _onLoadTopUsers(LoadTopUsers event, Emitter<LeaderboardState> emit) async {
+  Future<void> _onLoadTopUsers(LoadTopUsers event, Emitter<LeaderboardState> emit) async {
     emit(state.copyWith(status: LeaderboardStatus.loading));
     try {
       final topUsers = await _leaderboardRepository.getTopUsers(limit: event.limit);
@@ -31,7 +31,7 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
     }
   }
 
-  void _onLoadUserRank(LoadUserRank event, Emitter<LeaderboardState> emit) async {
+  Future<void> _onLoadUserRank(LoadUserRank event, Emitter<LeaderboardState> emit) async {
     try {
       final userRank = await _leaderboardRepository.getUserRank(event.userId);
       emit(state.copyWith(userRank: userRank));
@@ -43,7 +43,7 @@ class LeaderboardBloc extends Bloc<LeaderboardEvent, LeaderboardState> {
     }
   }
 
-  void _onLoadUsersAroundRank(LoadUsersAroundRank event, Emitter<LeaderboardState> emit) async {
+  Future<void> _onLoadUsersAroundRank(LoadUsersAroundRank event, Emitter<LeaderboardState> emit) async {
     try {
       final usersAroundRank = await _leaderboardRepository.getUsersAroundRank(
         event.userId,

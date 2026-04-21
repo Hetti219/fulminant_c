@@ -20,7 +20,7 @@ class BiometricBloc extends Bloc<BiometricEvent, BiometricState> {
     on<BiometricAuthenticationRequested>(_onAuthenticationRequested);
   }
 
-  void _onStatusChecked(
+  Future<void> _onStatusChecked(
       BiometricStatusChecked event, Emitter<BiometricState> emit) async {
     emit(BiometricLoading());
 
@@ -61,7 +61,7 @@ class BiometricBloc extends Bloc<BiometricEvent, BiometricState> {
     }
   }
 
-  void _onEnabled(BiometricEnabled event, Emitter<BiometricState> emit) async {
+  Future<void> _onEnabled(BiometricEnabled event, Emitter<BiometricState> emit) async {
     emit(BiometricLoading());
 
     try {
@@ -92,7 +92,7 @@ class BiometricBloc extends Bloc<BiometricEvent, BiometricState> {
     }
   }
 
-  void _onDisabled(
+  Future<void> _onDisabled(
       BiometricDisabled event, Emitter<BiometricState> emit) async {
     emit(BiometricLoading());
 
@@ -106,7 +106,7 @@ class BiometricBloc extends Bloc<BiometricEvent, BiometricState> {
     }
   }
 
-  void _onAuthenticationRequested(BiometricAuthenticationRequested event,
+  Future<void> _onAuthenticationRequested(BiometricAuthenticationRequested event,
       Emitter<BiometricState> emit) async {
     try {
       final BiometricAuthResult result =

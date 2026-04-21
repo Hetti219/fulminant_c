@@ -59,7 +59,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     );
   }
 
-  void _onSubmitted(SignupSubmitted event, Emitter<SignupState> emit) async {
+  Future<void> _onSubmitted(SignupSubmitted event, Emitter<SignupState> emit) async {
     if (state.isValid && state.dateOfBirth != null) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {

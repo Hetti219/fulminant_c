@@ -57,7 +57,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  void _onSubmitted(LoginSubmitted event, Emitter<LoginState> emit) async {
+  Future<void> _onSubmitted(LoginSubmitted event, Emitter<LoginState> emit) async {
     if (state.isValid) {
       // Rate limiting: check if account is locked out
       if (state.lockoutUntil != null &&
@@ -121,7 +121,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void _onPasswordResetRequested(
+  Future<void> _onPasswordResetRequested(
     PasswordResetRequested event,
     Emitter<LoginState> emit,
   ) async {
@@ -146,7 +146,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void _onBiometricAuthenticationRequested(
+  Future<void> _onBiometricAuthenticationRequested(
     BiometricAuthenticationRequested event,
     Emitter<LoginState> emit,
   ) async {

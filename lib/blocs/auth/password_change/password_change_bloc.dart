@@ -58,7 +58,7 @@ class PasswordChangeBloc
     ));
   }
 
-  void _onSubmitted(
+  Future<void> _onSubmitted(
     PasswordChangeSubmitted event,
     Emitter<PasswordChangeState> emit,
   ) async {
